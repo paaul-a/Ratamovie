@@ -1,5 +1,7 @@
 const db = require('./client');
 const { createUser } = require('./users');
+// import { comments } = require('./comments');
+// const { createMovie } = require('./movies');
 
 const users = [
   {
@@ -29,11 +31,21 @@ const users = [
   },
   // Add more user objects as needed
 ];  
-
+const comments = [
+  {
+    name: 'troy',
+    date: '2000',
+    rating: '3star',
+  },
+];
 const dropTables = async () => {
     try {
         await db.query(`
         DROP TABLE IF EXISTS users;
+        DROP TABLE IF EXISTS reviews;
+        DROP TABLE IF EXISTS movies;
+        DROP TABLE IF EXISTS comments;
+        
         `)
     }
     catch(err) {
@@ -56,6 +68,49 @@ const createTables = async () => {
     }
 }
 
+// const createMovies = async () => {
+//   try{
+//       await db.query(`
+//       CREATE TABLE movies(
+//           id SERIAL PRIMARY KEY,
+//           name VARCHAR(255) DEFAULT 'name',
+//           email VARCHAR(255) UNIQUE NOT NULL,
+//           password VARCHAR(255) NOT NULL
+//       )`)
+//   }
+//   catch(err) {
+//       throw err;
+//   }
+// }
+const createReviews = async () => {
+  try{
+      await db.query(`
+      CREATE TABLE reviews(
+          id SERIAL PRIMARY KEY,
+          name VARCHAR(255) DEFAULT 'name',
+          email VARCHAR(255) UNIQUE NOT NULL,
+          password VARCHAR(255) NOT NULL
+      )`)
+  }
+  catch(err) {
+      throw err;
+  }
+}
+const createCommentsTable = async () => {
+  try{
+      await db.query(`
+      CREATE TABLE comments(
+          id SERIAL PRIMARY KEY,
+          name VARCHAR(255) DEFAULT 'name',
+          email VARCHAR(255) UNIQUE NOT NULL,
+          password VARCHAR(255) NOT NULL
+      )`)
+  }
+  catch(err) {
+      throw err;
+  }
+}
+
 const insertUsers = async () => {
   try {
     for (const user of users) {
@@ -67,12 +122,29 @@ const insertUsers = async () => {
   }
 };
 
+
+const insertComments = async () => {
+  try {
+    for (const comment of comments) {
+      await createComment({name: comment.name, date: comment.date, rating: comment.rating});
+    }
+    console.log('Seed data inserted successfully.');
+  } catch (error) {
+    console.error('Error inserting seed data:', error);
+  }
+};
+
+
 const seedDatabse = async () => {
     try {
         db.connect();
         await dropTables();
         await createTables();
         await insertUsers();
+        // await createMovies();
+        await createCommentsTable();
+        // await createReviews();
+        await insertComments();
     }
     catch (err) {
         throw err;
