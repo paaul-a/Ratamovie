@@ -68,6 +68,7 @@ const createTables = async () => {
     }
 }
 
+<<<<<<< HEAD
 // const createMovies = async () => {
 //   try{
 //       await db.query(`
@@ -110,6 +111,9 @@ const createCommentsTable = async () => {
       throw err;
   }
 }
+=======
+
+>>>>>>> refs/remotes/origin/main
 
 const insertUsers = async () => {
   try {
