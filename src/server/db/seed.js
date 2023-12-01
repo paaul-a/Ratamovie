@@ -56,6 +56,8 @@ const createTables = async () => {
     }
 }
 
+
+
 const insertUsers = async () => {
   try {
     for (const user of users) {
