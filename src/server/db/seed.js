@@ -1,5 +1,10 @@
 const db = require('./client');
 const { createUser } = require('./users');
+const {createComment} = require('./comments');
+const {createReview} = require('./reviews');
+const {createMovie} = require('./movies');
+
+
 // import { comments } = require('./comments');
 // const { createMovie } = require('./movies');
 
@@ -33,11 +38,29 @@ const users = [
 ];  
 const comments = [
   {
-    name: 'troy',
+    id: 'troy',
     date: '2000',
     rating: '3star',
   },
 ];
+
+const movies = [
+  {
+    name: 'troy',
+    release: '2000',
+    genre: '3star',
+  },
+];
+
+const reviews = [
+  {
+    name: 'troy',
+    id: '2000',
+    email: '3star',
+  },
+];
+
+
 const dropTables = async () => {
     try {
         await db.query(`
@@ -68,29 +91,29 @@ const createTables = async () => {
     }
 }
 
-<<<<<<< HEAD
-// const createMovies = async () => {
-//   try{
-//       await db.query(`
-//       CREATE TABLE movies(
-//           id SERIAL PRIMARY KEY,
-//           name VARCHAR(255) DEFAULT 'name',
-//           email VARCHAR(255) UNIQUE NOT NULL,
-//           password VARCHAR(255) NOT NULL
-//       )`)
-//   }
-//   catch(err) {
-//       throw err;
-//   }
-// }
-const createReviews = async () => {
+const createMoviesTable = async () => {
+  try{
+      await db.query(`
+      CREATE TABLE movies(
+          id SERIAL PRIMARY KEY,
+          name VARCHAR(255) DEFAULT 'name',
+          release VARCHAR(255) DEFAULT 'release',
+          genre VARCHAR(255) UNIQUE NOT NULL
+         
+      )`)
+  }
+  catch(err) {
+      throw err;
+  }
+}
+const createReviewsTable = async () => {
   try{
       await db.query(`
       CREATE TABLE reviews(
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) DEFAULT 'name',
-          email VARCHAR(255) UNIQUE NOT NULL,
-          password VARCHAR(255) NOT NULL
+          email VARCHAR(255) UNIQUE NOT NULL
+          
       )`)
   }
   catch(err) {
@@ -102,18 +125,18 @@ const createCommentsTable = async () => {
       await db.query(`
       CREATE TABLE comments(
           id SERIAL PRIMARY KEY,
-          name VARCHAR(255) DEFAULT 'name',
-          email VARCHAR(255) UNIQUE NOT NULL,
-          password VARCHAR(255) NOT NULL
+          date VARCHAR(255) DEFAULT 'date',
+          rating VARCHAR(255) UNIQUE NOT NULL
+         
+          
       )`)
+      
   }
   catch(err) {
       throw err;
   }
 }
-=======
 
->>>>>>> refs/remotes/origin/main
 
 const insertUsers = async () => {
   try {
@@ -138,6 +161,29 @@ const insertComments = async () => {
   }
 };
 
+const insertMovies = async () => {
+  try {
+    for (const movie of movies) {
+      await createMovie({name: movie.name, release: movie.release, genre: movie.genre });
+    }
+    console.log('Seed data inserted successfully.');
+  } catch (error) {
+    console.error('Error inserting seed data:', error);
+  }
+};
+
+const insertReviews = async () => {
+  try {
+    for (const review of reviews) {
+      await createReview({name: review.name, email: review.email, id: review.id});
+    }
+    console.log('Seed data inserted successfully.');
+  } catch (error) {
+    console.error('Error inserting seed data:', error);
+  }
+};
+
+
 
 const seedDatabse = async () => {
     try {
@@ -145,10 +191,12 @@ const seedDatabse = async () => {
         await dropTables();
         await createTables();
         await insertUsers();
-        // await createMovies();
+        await createMoviesTable();
+        await insertMovies();
         await createCommentsTable();
-        // await createReviews();
         await insertComments();
+        await createReviewsTable();
+        await insertReviews();
     }
     catch (err) {
         throw err;
