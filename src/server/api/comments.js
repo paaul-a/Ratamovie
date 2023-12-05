@@ -16,13 +16,11 @@ commentsRouter.get('/', async (req, res, next) => {
     const reviewComment = await getCommentByReviewId();
 
     const comments = reviewComment.filter(comment => {
-      // the post is active, doesn't matter who it belongs to
       if (comment.active) {
         return true;
       }
     
-      // the post is not active, but it belogs to the current user
-      if (req.user && post.user.id === req.user.id) { //double check user or author
+      if (req.user && post.user.id === req.user.id) { //double check user 
         return true;
       }
     

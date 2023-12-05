@@ -116,8 +116,8 @@ const createReviewsTable = async () => {
       CREATE TABLE reviews(
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) DEFAULT 'name',
-          email VARCHAR(255) UNIQUE NOT NULL
-          
+          email VARCHAR(255) UNIQUE NOT NULL,
+          "movieId" INTEGER REFERENCES movies(id) 
       )`)
   }
   catch(err) {
@@ -130,8 +130,8 @@ const createCommentsTable = async () => {
       CREATE TABLE comments(
           id SERIAL PRIMARY KEY,
           date VARCHAR(255) DEFAULT 'date',
-          rating VARCHAR(255) UNIQUE NOT NULL
-         
+          rating VARCHAR(255) UNIQUE NOT NULL,
+          "reviewId" INTEGER REFERENCES reviews(id)
           
       )`)
       

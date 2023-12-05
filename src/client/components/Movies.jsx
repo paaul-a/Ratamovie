@@ -31,7 +31,7 @@ function Movies() {
   const filterMovie = () => {
     return movies.filter(
       (movie) =>
-      movie.title.toLowerCase().includes(searchBook.toLowerCase()) ||
+      movie.title.toLowerCase().includes(searchMovie.toLowerCase()) ||
       movies.director.toLowerCase().includes(searchMovie.toLocaleLowerCase())
     );
   };
