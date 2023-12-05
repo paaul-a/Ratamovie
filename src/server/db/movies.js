@@ -7,9 +7,9 @@ const db = require('./client')
 
   async function createMovie(movies) {
     await db.query(
-      `INSERT INTO movies(name, release, genre )
-    VALUES($1, $2, $3 );`,
-      [ movies.name, movies.release, movies.genre ]
+      `INSERT INTO movies(title, description, director, year )
+    VALUES($1, $2, $3, $4 );`,
+      [ movies.title, movies.description, movies.director, movies.year ]
     )
     try{
 

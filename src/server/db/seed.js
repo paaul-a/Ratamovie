@@ -3,6 +3,7 @@ const { createUser } = require('./users');
 const {createComment} = require('./comments');
 const {createReview} = require('./reviews');
 const {createMovie} = require('./movies');
+const {dataObjects} = require('../../../seedhelp')
 
 
 // import { comments } = require('./comments');
@@ -46,10 +47,12 @@ const comments = [
 
 const movies = [
   {
-    name: 'troy',
-    release: '2000',
-    genre: '3star',
+    TITLE: "anything",
+    DESCRIPTION: "any",
+    DIRECTOR: "year",
+    YEAR: "anyy",
   },
+  // dataObjects
 ];
 
 const reviews = [
@@ -96,9 +99,10 @@ const createMoviesTable = async () => {
       await db.query(`
       CREATE TABLE movies(
           id SERIAL PRIMARY KEY,
-          name VARCHAR(255) DEFAULT 'name',
-          release VARCHAR(255) DEFAULT 'release',
-          genre VARCHAR(255) UNIQUE NOT NULL
+          TITLE VARCHAR(255) DEFAULT 'title',
+          DESCRIPTION VARCHAR(255) DEFAULT 'description',       
+          DIRECTOR VARCHAR(255) DEFAULT 'director',
+          YEAR VARCHAR(255) DEFAULT 'year'
          
       )`)
   }
@@ -161,17 +165,31 @@ const insertComments = async () => {
   }
 };
 
-const insertMovies = async () => {
-  try {
-    for (const movie of movies) {
-      await createMovie({name: movie.name, release: movie.release, genre: movie.genre });
-    }
-    console.log('Seed data inserted successfully.');
-  } catch (error) {
-    console.error('Error inserting seed data:', error);
-  }
-};
+// const insertMovies = async () => {
+//   try {
+//     for (const movie of movies) {
+//       await createMovie({name: movie.name, release: movie.release, genre: movie.genre });
+//     }
+//     console.log('Seed data inserted successfully.');
+//   } catch (error) {
+//     console.error('Error inserting seed data:', error);
+//   }
+// };
+const insertMoviesFromDataObjects = async () => {
+  try{
+    for(const movieData of dataObjects) {
+      await createMovie({
+        title: movieData.TITLE,
+        description: movieData.DESCRIPTION,
+        director: movieData.DIRECTOR,
+        year: movieData.YEAR
 
+      })
+    }
+    console.log("seed data inserted successfully")
+
+  } catch (error){console.error("error inserting seed data:", error)}
+}
 const insertReviews = async () => {
   try {
     for (const review of reviews) {
@@ -192,11 +210,12 @@ const seedDatabse = async () => {
         await createTables();
         await insertUsers();
         await createMoviesTable();
-        await insertMovies();
+        // await insertMovies();
         await createCommentsTable();
         await insertComments();
         await createReviewsTable();
         await insertReviews();
+        await insertMoviesFromDataObjects();
     }
     catch (err) {
         throw err;
