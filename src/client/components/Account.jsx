@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 function Account({ token }) {
   const [userData, setUserData] = useState({});
   const [reviewedMovies, setReviewedMovies] =useState([]);
-  let API ='https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api'
+  let API = "http://localhost:3000/api"
   
   useEffect(() =>{
     fetchAccount();
@@ -34,7 +34,7 @@ function Account({ token }) {
   async function fetchReviewedMovies(){
     if (token){
       try{
-        const response = await fetch//(`${API}/reservations`, --> figure out what to call in api...maybe reviews/userid or something{
+        const response = await fetch(`${API}/users/reviews`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -42,7 +42,7 @@ function Account({ token }) {
         });
         const result = await response.json();
         setReviewedMovies(result.reviews);
-      }catch(error){
+      } catch(error) {
         console.error(error.message);
       }
     }
