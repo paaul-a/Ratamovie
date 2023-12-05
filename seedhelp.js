@@ -31,8 +31,5 @@ function parseDataRow(row) {
   console.log(dataObjects)
   const jsString = JSON.stringify(dataObjects, null, 2);
 fs.writeFileSync('dataArr.js', jsString, 'utf8');
-// module.exports = {
-//     parseDataRow
-// }
 module.exports = {dataObjects}
   

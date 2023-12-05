@@ -5,7 +5,7 @@ const SALT_COUNT = 10;
 const createUser = async({ name='first last', email, password }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
-        const { rows: [user ] } = await db.query(`
+        const { rows: [ user ] } = await db.query(`
         INSERT INTO users(name, email, password)
         VALUES($1, $2, $3)
         ON CONFLICT (email) DO NOTHING
@@ -50,8 +50,31 @@ const getUserByEmail = async(email) => {
     }
 }
 
+const getUserById = async(userId) => {
+    try {
+        const { rows: [ users ] } = await client.query(`
+            SELECT id, username, name, email
+            FROM users
+            WHERE id=${ userId }`
+        );
+
+        if(!users) {
+            throw {
+                name: "UserNotFoundError",
+                message: "A user with that id does not exist"
+            }
+        }
+        users.reviews = await getReviewByUser(userId)
+
+    } catch(error) {
+        throw error;
+    }
+
+}
+
 module.exports = {
     createUser,
     getUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserById
 };
