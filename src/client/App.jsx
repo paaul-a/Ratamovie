@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link, Routes, Router } from "react-router-dom";
 import reactLogo from './assets/react.svg';
 import Login from './components/Login';
-import Movies from './Movies';
-import Register from './Register';
+import Movies from './components/Movies';
+import Register from './components/Register';
 
 
 function App() {
