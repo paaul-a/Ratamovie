@@ -1,7 +1,10 @@
 const express = require('express');
 const moviesRouter = express.Router();
 
-const { getAllMovies } = require('../db/movies'); 
+
+const { getAllMovies
+  // import functions from db index.js
+} = require('../db/movies')
 
 moviesRouter.get('/', async (req, res, next) => {
   try {
@@ -13,6 +16,6 @@ moviesRouter.get('/', async (req, res, next) => {
     console.error('Error fetching movies:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-});
+})
 
-module.exports = moviesRouter;
+module.exports =  moviesRouter; 

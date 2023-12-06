@@ -1,14 +1,13 @@
 const express = require('express');
 const reviewsRouter = express.Router();
 
-// const { requireUser } = require('./utils');
 
 const { 
   createReview,
   updateReview,
   getReviewByMovieId,
   deleteReview,
-} = require('../db');
+} = require('../db/index');
 
 reviewsRouter.get('/', async (req, res, next) => {
   try {
