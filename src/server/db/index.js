@@ -1,15 +1,18 @@
-async function getAllMovies() {
-        try {
-          const { rows } = await client.query(`
-            SELECT * 
-            FROM tags;
-          `);
+// const db = require("./client");
+
+
+// async function getAllMovies() {
+//         try {
+//           const { rows } = await db.query(`
+//             SELECT * 
+//             FROM movies;
+//           `);
       
-          return { rows }
-        } catch (error) {
-          throw error;
-        }
-      }
+//           return { rows }
+//         } catch (error) {
+//           throw error;
+//         }
+//       }
         
 
 
@@ -18,6 +21,6 @@ async function getAllMovies() {
 
 
 module.exports = {
-    getAllMovies,
+    //getAllMovies,
     ...require('./users')
 }

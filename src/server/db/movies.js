@@ -16,7 +16,8 @@ async function createMovie(movie) {
 async function getAllMovies() {
   try {
     const result = await db.query(`
-      SELECT * FROM movies
+      SELECT * 
+      FROM movies
     `);
     console.log(result.rows)
     return result.rows;
