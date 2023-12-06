@@ -1,15 +1,18 @@
 const express = require('express');
-const postRouter = express.Router();
+const moviesRouter = express.Router();
 
 
-const {
+const { getAllMovies
   // import functions from db index.js
-} = require('../db')
+} = require('../db/index')
 
-postsRouter.get('/', async (req, res, next) => {
+moviesRouter.get('/movies', async (req, res, next) => {
   try {
+    const movies = await getAllMovies();
+    console.log('Movies:', movies);
+    res.json(movies);
 
-  } catch {
-    
+  } catch (error){
+    console.error('error fetching movies: ', error)
   }
 })

@@ -5,7 +5,6 @@ const reviewsRouter = express.Router();
 
 const { 
   createReview,
-  // getAllPosts,
   updateReview,
   getReviewByMovieId,
   deleteReview,
