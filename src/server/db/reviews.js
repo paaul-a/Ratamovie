@@ -2,9 +2,9 @@ const db = require('./client')
 
 async function createReview(reviews) {
   await db.query(
-    `INSERT INTO comments(id, name, email,)
-    VALUES($1, $2, $3,);`,
-    [reviews.id, reviews.name, reviews.email]
+    `INSERT INTO reviews (content, rating, name, email, "movieId", "userId")
+    VALUES($1, $2, $3, $4, $5, $6);`,
+    [reviews.content, reviews.rating, reviews.name, reviews.email, reviews.movieId, reviews.userId]
   )
 }
 
@@ -78,7 +78,7 @@ async function getReviewByUserId(userId) {
 
 module.exports = {
   createReview,
-  getReviewById,
+  //getReviewById,
 
   // getComments,
   // getPetById,

@@ -1,15 +1,30 @@
 const express = require('express');
 const postRouter = express.Router();
 
+const { getAllMovies } = require('../db/movies'); 
 
-const {
-  // import functions from db index.js
-} = require('../db')
+// postRouter.get('/movies', async (req, res) => {
+//   try {
+//     const movies = await getAllMovies();
+//     res.json(movies);
+//   } catch (error) {
+//     console.error('Error testing getAllMovies:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
-postsRouter.get('/', async (req, res, next) => {
-  try {
+// app.listen(port, () => {
+//   console.log(`Server is running on port ${port}`);
+// });
 
-  } catch {
-    
-  }
-})
+// const {
+//   // import functions from db index.js
+// } = require('../db')
+
+// postsRouter.get('/', async (req, res, next) => {
+//   try {
+
+//   } catch {
+
+//   }
+// })

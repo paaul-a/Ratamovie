@@ -34,31 +34,35 @@ const users = [
   },
   // Add more user objects as needed
 ]
-const comments = [
-  {
-    id: 'troy',
-    date: '2000',
-    rating: '3star',
-  },
-]
-
-const movies = [
-  {
-    TITLE: 'anything',
-    DESCRIPTION: 'any',
-    DIRECTOR: 'year',
-    YEAR: 'anyy',
-  },
-  // dataObjects
-]
 
 const reviews = [
   {
-    name: 'troy',
-    id: '2000',
-    email: '3star',
+    content: "This movie was amazing!",
+    rating: 5,
+    name: "Emily Johnson",
+    email: "emily@example.com",
+    movieId: 1,
+    userId: 1,
   },
-]
+  {
+    content: "This movie made my head hurt",
+    rating: 4,
+    name: "Isabella García",
+    email: "bella@example.com",
+    movieId: 8,
+    userId: 3,
+  },
+  // Add more dummy reviews if needed
+];
+
+const comments = [
+  {
+    content: "I agree, great movie!",
+    reviewId: 1,
+    userId: 2,
+  },
+  // Add more dummy comments if needed
+];
 
 const dropTables = async () => {
   try {
@@ -105,6 +109,7 @@ const createMoviesTable = async () => {
       CREATE TABLE movies(
           id SERIAL PRIMARY KEY,
           title VARCHAR(255) DEFAULT 'title',
+          image TEXT,
           description TEXT DEFAULT 'description',       
           director VARCHAR(255) DEFAULT 'director',
           year VARCHAR(255) DEFAULT 'year'
@@ -119,22 +124,26 @@ const createReviewsTable = async () => {
     await db.query(`
       CREATE TABLE reviews(
           id SERIAL PRIMARY KEY,
+          content TEXT NOT NULL,
+          rating INTEGER CHECK (rating >= 1 AND rating <= 5),
           name VARCHAR(255) DEFAULT 'name',
           email VARCHAR(255) UNIQUE NOT NULL,
-          "movieId" INTEGER REFERENCES movies(id) 
+          "movieId" INTEGER REFERENCES movies(id),
+          "userId" INTEGER REFERENCES users(id)
       )`)
   } catch (err) {
     throw err
   }
 }
+
 const createCommentsTable = async () => {
   try {
     await db.query(`
       CREATE TABLE comments(
           id SERIAL PRIMARY KEY,
-          date VARCHAR(255) DEFAULT 'date',
-          rating VARCHAR(255) UNIQUE NOT NULL,
-          "reviewId" INTEGER REFERENCES reviews(id)
+          content TEXT NOT NULL,
+          "reviewId" INTEGER REFERENCES reviews(id),
+          "userId" INTEGER REFERENCES users(id)
           
       )`)
   } catch (err) {
@@ -171,14 +180,18 @@ const insertMovies = async () => {
     console.error('error inserting seed data:', error)
   }
 }
+
 const insertReviews = async () => {
   try {
     for (const review of reviews) {
-      await createReview({
-        name: review.name,
-        email: review.email,
-        id: review.id,
-      })
+      await createReview(review)
+      // await createReview({
+      //   content: review.content,
+      //   name: review.name,
+      //   email: review.email,
+      //   movieId: review.movieId,
+      //   userId: review.userId
+      // })
     }
     console.log('Reviews Data Successfully Seeded.')
   } catch (error) {
@@ -189,11 +202,12 @@ const insertReviews = async () => {
 const insertComments = async () => {
   try {
     for (const comment of comments) {
-      await createComment({
-        name: comment.name,
-        date: comment.date,
-        rating: comment.rating,
-      })
+      await createComment(comment)
+      // await createComment({
+      //   content: comment.content,
+      //   reviewId: comment.reviewId,
+      //   userId: comment.userId,
+      // })
     }
     console.log('Comments Data Successfully Seeded.')
   } catch (error) {
@@ -211,9 +225,8 @@ const seedDatabse = async () => {
     await createTables()
     await insertUsers()
     await insertMovies()
-    // * NOTE reviews and comments have errors.  Need fixing.
-    //await insertReviews()
-    //await insertComments()
+    await insertReviews()
+    await insertComments()
   } catch (err) {
     throw err
   } finally {
