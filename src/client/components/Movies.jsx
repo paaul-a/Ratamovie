@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Axios from 'axios' // check bookBuddy if there is more you have to do for importing axios
+import Axios from 'axios'
 
 let API = 'http://localhost:3000/api'
 
 
 function Movies() {
-  const [ movies, setMovies ] = useState({});
-  const [ searchMovie, setSearchMovie ] = useState ("");
+ 
+  const [searchMovie, setSearchMovie] = useState("");
+
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     fetchMovies();
@@ -16,12 +18,21 @@ function Movies() {
 
   async function fetchMovies() {
     try {
-      const { data } = await Axios.get(`${API}/movies`)
+      //  fix this const data = movies make array obj of movies
+     
+      const { data } = await Axios.get(`${API}/movies`);
+
+      
+
+
       setMovies(data.movies);
 
-    } catch(error) {
-      console.error(err.message)
+    } catch (error) {
+      console.error('Error fetching movies:', error.message);
+      
     }
+    
+    
   }
 
   const handleInputChange = (e) => {
@@ -31,31 +42,33 @@ function Movies() {
   const filterMovie = () => {
     return movies.filter(
       (movie) =>
-      movie.title.toLowerCase().includes(searchMovie.toLowerCase()) ||
-      movies.director.toLowerCase().includes(searchMovie.toLocaleLowerCase())
+        movie.title.toLowerCase().includes(searchMovie.toLowerCase()) ||
+        movie.director.toLowerCase().includes(searchMovie.toLowerCase())
     );
   };
+  
 
   return (
     <>
       <div className='movies-container'>
         <h2>Popular Movies</h2>
         <input 
-          className="search=bar"
+         className="search-bar"
           type="text"
           placeholder="Search by movie title or director..."
           value={searchMovie}
           onChange={handleInputChange}
         />
         {
-          movies.length ?
+          movies.length ? (
             filterMovie().map((movie) => {
               return <div key={movie.id}>
-                <Link className="details-link" to={`/details/${movie.id}`}>{movie.img}</Link>
-                {/* display movie image in a card that hover highlights to link to movie details page */}
+                <Link className="details-link" to={`/details/${movie.id}`}>
+  <img src={movie.img} alt={movie.title} />
+</Link>
               </div>
             })
-            :
+            )  :
             <h2>Loading...</h2>
         }
       </div>
