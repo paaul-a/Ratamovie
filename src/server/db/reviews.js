@@ -104,9 +104,4 @@ module.exports = {
   getReviewByMovieAndUser,
   getReviewById,
   deleteReview,
-  //getReviewById,
-
-  // getComments,
-  // getPetById,
-  // createPet,
 }
