@@ -22,7 +22,7 @@ async function getAllMovies() {
     console.log(result.rows)
     return result.rows;
 
-  } catch(err) {
+  } catch (err) {
     console.log("Error getting movies from the database:", err)
     throw err
   }
