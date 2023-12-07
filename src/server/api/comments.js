@@ -1,11 +1,11 @@
 const express = require('express');
 const commentsRouter = express.Router();
-
-// const { requireUser } = require('./utils');-->DEFINE THIS SOMEWHERE!!!-->Do we need utils.js function???
+const { requireUser } = require('./utils');
 
 const { 
   createComment,
   getCommentsByReviewId,
+  getCommentById,
   deleteComment,
   editComment,
 } = require('../db/comments');
@@ -26,42 +26,79 @@ commentsRouter.get('/:reviewId', async (req, res, next) => {
 })
 
 commentsRouter.post('/', requireUser, async (req, res, next) =>{
-  const { title, content = "", reviewId } = req.body;
-  const commentData = { content, reviewId, userId: req.user.id };
+  const { content = "", reviewId } = req.body;
+  const commentData = {}
   try{
-    const comment = await createComment(commentData);
-    res.send(comment);
-  } catch (error){
-    console.error('Error creating comment: ', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+    commentData.content = content;
+    commentData.reviewId = reviewId;
+    commentData.userId = req.user.id;
 
-//think i need something that specifies only user who made this can edit 
+    const comment = await createComment(commentData);
+    if(comment) {
+      res.send(comment);
+    } else {
+      next({
+        name: 'CommentCreationError',
+        message: 'There was an error creating your comment. Please try again.'
+      })
+    }
+    
+  } catch({name, message}) {
+    next({name, message});
+  }
+})
+//NEED A GET COMMENT BY ID?????
+//DO I NEED TO HAVE SOME SORT OF RETURN BC THESE FUNCTIOSN WORK JUST NOT SURE
 commentsRouter.patch('/:commentId', requireUser, async (req, res, next) =>{
   const { commentId } = req.params;
   const { updatedContent } = req.body;
-
   try{
+    const commentToUpdate = await getCommentById(commentId);
+    if(!commentToUpdate) {
+      return next({
+        name: 'CommentNotFound',
+        message: 'Sorry, that comment wasnt found',
+      });
+    }
+    if (req.user.id !== commentToUpdate.userId){
+      return res.status(403).send({
+        success: false, 
+        message: 'Sorry you cannot edit a post that is not yours!'
+      });
+    }
     await editComment(commentId, updatedContent);
-    resizeTo.status(200).json({message: 'content successfully updated'});
-  }catch (error){
-    console.error('Error updating comment:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(200).json({ message: 'Content succesfull updated' });
+  } catch (error) {
+    console.error( 'Error updating comment: ', error);
+    res.status(500).json({ error: 'Internal Server Error'});
   }
 });
 
 commentsRouter.delete('/:commentId', requireUser, async (req, res, next) =>{
+  try {
   const { commentId } = req.params;
-  const { updatedContent } = req.body;
+  const commentToUpdate = await getCommentById(commentId);
 
-  try{
-    await deleteComment(commentId, updatedContent);
-    resizeTo.status(200).json({message: 'content deleted updated'});
-  }catch (error){
-    console.error('Error updating comment:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+  if (!commentToUpdate){
+    return next({
+      name: 'Comment not found.',
+      message: 'sorry, that comment was not found.'
+    });
   }
+
+  if (req.user.id !== commentToUpdate.userId){
+    return res.status(403).send({
+      success: false, 
+      message: 'Sorry. That comment does not belong to you!'
+    });
+  }
+
+  const deletedComment = await deleteComment(commentId);
+  res.status(204).send({ success: true, deletedComment });
+
+} catch ({ name, message}){
+  next ({ name, message });
+}
 });
 
 module.exports = commentsRouter;
