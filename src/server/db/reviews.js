@@ -1,28 +1,52 @@
 const db = require('./client')
 
 async function createReview(reviews) {
-  await db.query(
-    `INSERT INTO reviews (content, rating, name, email, "movieId", "userId")
-    VALUES($1, $2, $3, $4, $5, $6);`,
-    [reviews.content, reviews.rating, reviews.name, reviews.email, reviews.movieId, reviews.userId]
+  const {rows: [ review ]} = await db.query(
+    `INSERT INTO reviews (content, rating, name, "movieId", "userId")
+    VALUES($1, $2, $3, $4, $5)
+    RETURNING *`, 
+    [reviews.content, reviews.rating, reviews.name, reviews.movieId, reviews.userId]
+
+    
   )
+  return review
 }
+
+// async function createReview(reviews) {
+//   const query = `
+//     INSERT INTO reviews (content, rating, name, "movieId", "userId")
+//     VALUES($1, $2, $3, $4, $5)
+//     RETURNING *;`;
+
+//   try {
+//     const result = await db.query(query, [
+//       reviews.content,
+//       reviews.rating,
+//       reviews.name,
+//       reviews.movieId,
+//       reviews.userId,
+//     ]);
+
+//     // Log the SQL query
+//     console.log('SQL Query:', result.query);
+
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 async function getReviewByMovieId(movieId) {
   try {
-    const { rows: reviewIds } = await db.query(
+    const { rows: reviews } = await db.query(
       `
-        SELECT reviews.id
+        SELECT *
         FROM reviews
-        JOIN 
-        WHERE 
+        WHERE "movieId" = $1
       `,
       [movieId]
     )
 
-    return await Promise.all(
-      reviewIds.map((review) => getReviewById(review.id))
-    )
+    return reviews;
   } catch (error) {
     throw error
   }
@@ -69,15 +93,25 @@ async function getUserReview() {
   }
 }
 
-async function getReviewByUserId(userId) {
-  // SELECT * FROM users JOIN reviews
-  // ON reviews.user_id = user.id
-  // WHERE [users.id](users.id) = $1
-  // WHERE [user.id](user.id) = $1
+async function getReviewByMovieAndUser(movieId, userId) {
+  try {
+    const { rows: reviews } = await db.query(`
+      SELECT * 
+      FROM reviews
+      WHERE "movieId" = $1 AND "userId" = $2
+      `,
+      [movieId, userId]
+    );
+    return reviews;
+  } catch(err) {
+    throw err;
+  }
 }
 
 module.exports = {
   createReview,
+  getReviewByMovieId,
+  getReviewByMovieAndUser,
   //getReviewById,
 
   // getComments,

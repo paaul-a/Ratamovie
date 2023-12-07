@@ -52,20 +52,21 @@ const getUserByEmail = async(email) => {
 
 const getUserById = async(userId) => {
     try {
-        const { rows: [ users ] } = await client.query(`
-            SELECT id, username, name, email
+        const { rows: [ user ] } = await db.query(`
+            SELECT *
             FROM users
-            WHERE id=${ userId }`
+            WHERE id = ${userId}
+            `
         );
 
-        if(!users) {
-            throw {
+        if(!user) {
+            next({
                 name: "UserNotFoundError",
                 message: "A user with that id does not exist"
-            }
+            })
         }
-        users.reviews = await getReviewByUser(userId)
-
+        //user.reviews = await getReviewByUser(userId)
+        return user
     } catch(error) {
         throw error;
     }
