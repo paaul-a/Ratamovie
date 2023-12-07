@@ -52,6 +52,31 @@ const reviews = [
     movieId: 8,
     userId: 3,
   },
+  {
+    content: "Epic movie",
+    rating: 3,
+    name: "John Smith",
+    email: "johna@example.com",
+    movieId: 10,
+    userId: 5,
+  },
+  {
+    content: "I loved this movie so much it rocks my world.",
+    rating: 3,
+    name: "Isabella García",
+    email: "bella@example.com",
+    movieId: 2,
+    userId: 3,
+  },
+  {
+    content: "Best film ever made.",
+    rating: 4,
+    name: 'Mohammed Ahmed',
+    email: 'mohammed@example.com',
+    movieId: 1,
+    userId: 4,
+  },
+
   // Add more dummy reviews if needed
 ];
 
@@ -61,6 +86,22 @@ const comments = [
     reviewId: 1,
     userId: 2,
   },
+  {
+    content: "I agree, great movie!",
+    reviewId: 2,
+    userId: 3,
+  },
+  {
+    content: "I agree, great movie!",
+    reviewId: 2,
+    userId: 4,
+  },
+  {
+    content: "I agree, great movie!",
+    reviewId: 3,
+    userId: 5,
+  },
+
   // Add more dummy comments if needed
 ];
 
