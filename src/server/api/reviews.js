@@ -8,6 +8,8 @@ const {
   getReviewByMovieId,
   getReviewByMovieAndUser,
   createReview,
+  getReviewById,
+  deleteReview,
 } = require('../db/reviews');
 
 reviewsRouter.get('/:movieId', async (req, res, next) => {
@@ -64,32 +66,32 @@ reviewsRouter.post('/', requireUser, async (req, res, next) => {
     next({name, message});
   }
 })
-// reviewsRouter.post('/', requireUser, async (req, res, next) => {
-//   console.log('hello');
-//   const { title, content = "" } = req.body;
+reviewsRouter.delete('/:reviewId'), requireUser, async (req, res, next) => {
+  try {
+    const { reviewId } = req.params;
+    const reviewToUpdate = await getReviewById(reviewId);
 
-//   const reviewData = {};
+    if(!reviewToUpdate) {
+      return next ({
+        name: "NotFound",
+        message: `No review found by ID ${reviewId}`
+      })
+    } else if(req.user.id !== reviewToUpdate.userId) {
+      res.status(403);
+      return next({
+        name: "WrongUserError",
+        message: "You must be the same user who created this review to perform this action."
+      });
+    } else {
+      const deletedReview = await deleteReview(reviewId)
+      res.send({success: true, ...deletedReview})
+    }
 
-//   try {
-//     reviewData.userId = req.user.id; //double check this one user or author
-//     reviewData.title = title;
-//     reviewData.content = content;
 
-//     const review = await createReview(reviewData);
-//     console.log("******", reviewData);
-//     if (review) {
-//       res.send(review);
-//     } else {
-//       next({
-//         name: 'PostCreationError',
-//         message: 'There was an error creating your post. Please try again.'
-//       })
-//     }
-//   } catch ({ name, message }) {
-//     next({ name, message });
-//   }
-// });
-
+  } catch(err) {
+    next(err)
+  }
+}
 // reviewData.patch('/:reviewId', requireUser, async (req, res, next) => {
 //   const { reviewId } = req.params;
 //   const { title, content } = req.body; //need content, comments?
