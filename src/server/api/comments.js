@@ -1,5 +1,6 @@
 const express = require('express');
 const commentsRouter = express.Router();
+const { requireUser } = require('./utils')
 
 // const { requireUser } = require('./utils');-->DEFINE THIS SOMEWHERE!!!-->Do we need utils.js function???
 

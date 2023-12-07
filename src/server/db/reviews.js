@@ -12,29 +12,6 @@ async function createReview(reviews) {
   return review
 }
 
-// async function createReview(reviews) {
-//   const query = `
-//     INSERT INTO reviews (content, rating, name, "movieId", "userId")
-//     VALUES($1, $2, $3, $4, $5)
-//     RETURNING *;`;
-
-//   try {
-//     const result = await db.query(query, [
-//       reviews.content,
-//       reviews.rating,
-//       reviews.name,
-//       reviews.movieId,
-//       reviews.userId,
-//     ]);
-
-//     // Log the SQL query
-//     console.log('SQL Query:', result.query);
-
-//   } catch (error) {
-//     throw error;
-//   }
-// }
-
 async function getReviewByMovieId(movieId) {
   try {
     const { rows: reviews } = await db.query(
@@ -61,17 +38,17 @@ async function getReviewById(reviewId) {
         SELECT *
         FROM reviews
         WHERE id=$1;
-      `,
-      [reviewId]
-    )
+      `, [reviewId]
 
+    )
+    
     if (!review) {
       throw {
         name: 'ReviewNotFoundError',
         message: 'Could not find a review with that id',
       }
     }
-    //
+    return review
   } catch (error) {
     throw error
   }
@@ -108,10 +85,25 @@ async function getReviewByMovieAndUser(movieId, userId) {
   }
 }
 
+async function deleteReview(reviewId) {
+  try {
+    const {rows: [review]} = await db.query(`
+      DELETE FROM comments
+      WHERE id = $1
+      RETURNING *`, [reviewId]);
+    
+    return review;
+  } catch(err) {
+    throw err
+  }
+}
+
 module.exports = {
   createReview,
   getReviewByMovieId,
   getReviewByMovieAndUser,
+  getReviewById,
+  deleteReview,
   //getReviewById,
 
   // getComments,
