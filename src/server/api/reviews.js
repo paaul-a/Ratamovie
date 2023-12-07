@@ -1,5 +1,7 @@
 const express = require('express');
 const reviewsRouter = express.Router();
+const { requireUser } = require('./utils');
+
 
 
 const { 
@@ -34,7 +36,7 @@ reviewsRouter.get('/:movieId/users/:userId', async (req, res, next) => {
   }
 })
 
-reviewsRouter.post('/', async (req, res, next) => {
+reviewsRouter.post('/', requireUser, async (req, res, next) => {
   const {content = "", rating, name, movieId} = req.body;
   const reviewData = {};
 
@@ -48,7 +50,7 @@ reviewsRouter.post('/', async (req, res, next) => {
     
     const review = await createReview(reviewData);
     console.log("review data:", reviewData)
-
+    
     if(review) {
       res.send(review);
     } else {
@@ -57,7 +59,7 @@ reviewsRouter.post('/', async (req, res, next) => {
         message: 'There was an error creating your review. Please try again.'
       })
     }
-
+    
   } catch({name, message}) {
     next({name, message});
   }

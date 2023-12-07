@@ -17,11 +17,13 @@ apiRouter.use(async (req, res, next) => {
   } else if (auth.startsWith(prefix)) {
     // TODO - Get JUST the token out of 'auth'
     const token = auth.slice(prefix.length);
-    
+    console.log('token:', token)
+
     try {
       const parsedToken = jwt.verify(token, JWT_SECRET);
+      console.log('parsedToken:', parsedToken)
       const id = parsedToken && parsedToken.id
-
+      console.log('id:', id)
       if(id) {
         req.user = await getUserById(id);
         next()
@@ -52,6 +54,6 @@ apiRouter.use('/reviews/users', reviewsRouter)
 
 apiRouter.use((err, req, res, next) => {
     res.status(500).send(err)
-  })
+  }) //
 
 module.exports = apiRouter;

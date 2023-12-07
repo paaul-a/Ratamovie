@@ -55,17 +55,18 @@ const getUserById = async(userId) => {
         const { rows: [ user ] } = await db.query(`
             SELECT *
             FROM users
-            WHERE id = $1`
+            WHERE id = ${userId}
+            `
         );
 
         if(!user) {
-            throw {
+            next({
                 name: "UserNotFoundError",
                 message: "A user with that id does not exist"
-            }
+            })
         }
         //user.reviews = await getReviewByUser(userId)
-
+        return user
     } catch(error) {
         throw error;
     }

@@ -1,36 +1,39 @@
 const db = require('./client')
 
-// async function createReview(reviews) {
-//   await db.query(
-//     `INSERT INTO reviews (content, rating, name, "movieId", "userId")
-//     VALUES($1, $2, $3, $4, $5);`,
-//     [reviews.content, reviews.rating, reviews.name, reviews.movieId, reviews.userId]
-//   )
-// }
-
 async function createReview(reviews) {
-  const query = `
-    INSERT INTO reviews (content, rating, name, "movieId", "userId")
+  const {rows: [ review ]} = await db.query(
+    `INSERT INTO reviews (content, rating, name, "movieId", "userId")
     VALUES($1, $2, $3, $4, $5)
-    RETURNING *;`;
+    RETURNING *`, 
+    [reviews.content, reviews.rating, reviews.name, reviews.movieId, reviews.userId]
 
-  try {
-    const result = await db.query(query, [
-      reviews.content,
-      reviews.rating,
-      reviews.name,
-      reviews.movieId,
-      reviews.userId,
-    ]);
-
-    // Log the SQL query
-    console.log('SQL Query:', result.query);
-
-    // Rest of the function...
-  } catch (error) {
-    throw error;
-  }
+    
+  )
+  return review
 }
+
+// async function createReview(reviews) {
+//   const query = `
+//     INSERT INTO reviews (content, rating, name, "movieId", "userId")
+//     VALUES($1, $2, $3, $4, $5)
+//     RETURNING *;`;
+
+//   try {
+//     const result = await db.query(query, [
+//       reviews.content,
+//       reviews.rating,
+//       reviews.name,
+//       reviews.movieId,
+//       reviews.userId,
+//     ]);
+
+//     // Log the SQL query
+//     console.log('SQL Query:', result.query);
+
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 async function getReviewByMovieId(movieId) {
   try {
