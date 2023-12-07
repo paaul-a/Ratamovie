@@ -28,8 +28,21 @@ async function getAllMovies() {
   }
 }
 
+async function getMovieById(movieId){
+  try{
+    const result = await db.query( `
+    SELECT * 
+    FROM movies 
+    WHERE id = $1
+    `, [movieId]);
+    return result.rows[0];
+  } catch (error){
+    throw error;
+  }
+}
 
 module.exports = {
   createMovie,
   getAllMovies,
+  getMovieById
 };

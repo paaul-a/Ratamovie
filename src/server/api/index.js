@@ -38,6 +38,8 @@ apiRouter.use('/users', usersRouter);
 const moviesRouter = require('./movies');
 apiRouter.use('/movies', moviesRouter);
 
+const commentsRouter = require('./comments');
+apiRouter.use('/comments', commentsRouter)
 apiRouter.use((err, req, res, next) => {
     res.status(500).send(err)
   })
