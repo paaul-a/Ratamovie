@@ -1,19 +1,26 @@
 const db = require('./client')
 
 async function createComment(comments) {
-  try{
-    if(!comments.userId){
-      throw new Error('User must be logged in to create a comment.')
-    }
-    await db.query(
+  const { rows: [ comment ]} =  await db.query(
       `INSERT INTO comments(content, "reviewId", "userId")
-      VALUES($1, $2, $3);`,
+      VALUES($1, $2, $3)
+      RETURNING *`,
       [comments.content, comments.reviewId, comments.userId]
-    );
-  } catch (error){
-    throw error;
+    )
+    return comment
+  } 
+
+  async function getCommentById(commentId) {
+    try{
+      const { rows: [comment] } = await db.query(`
+      SELECT * 
+      FROM comments
+      WHERE id = $1`, [commentId]);
+      return comment;
+    } catch (error){
+      throw error;
+    }
   }
-}
 
 async function getCommentsByReviewId(reviewId){
   try{
@@ -53,5 +60,6 @@ module.exports = {
   createComment,
   editComment,
   deleteComment,
-  getCommentsByReviewId
+  getCommentsByReviewId,
+  getCommentById
 }
