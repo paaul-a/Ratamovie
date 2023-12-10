@@ -54,6 +54,17 @@ async function getReviewById(reviewId) {
   }
 }
 
+async function getAllReviews() {
+  try {
+    const { rows: reviews } = await db.query(`
+    SELECT *
+    FROM reviews;
+    `);
+    return reviews;
+  } catch (error) {
+    throw error;
+  }
+}
 async function getUserReview() {
   try {
     const { rows: reviewIds } = await db.query(`
@@ -132,5 +143,6 @@ module.exports = {
   getReviewByMovieAndUser,
   getReviewById,
   deleteReview,
-  editReview
+  editReview, 
+  getAllReviews
 }

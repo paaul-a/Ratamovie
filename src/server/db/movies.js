@@ -41,8 +41,30 @@ async function getMovieById(movieId){
   }
 }
 
+async function editMovie(movieId, updatedMovieData) {
+  const { image, description } = updatedMovieData
+  try{
+    const { rows: [updatedMovie] } = await db.query(`
+    UPDATE movies
+    SET image = $1, description = $2
+    WHERE id = $3
+    RETURNING *`, [image, description, movieId]);
+    if (!updatedMovie){
+      throw{
+        name: 'MovieNotFound',
+        message: `Movie with this id: ${movieId} was not found`
+      };
+    }
+    return updatedMovie;
+  } catch (error){
+    throw error;
+  }
+}
+
+
 module.exports = {
   createMovie,
   getAllMovies,
-  getMovieById
+  getMovieById, 
+  editMovie,
 };
