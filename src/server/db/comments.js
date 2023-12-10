@@ -56,10 +56,24 @@ async function deleteComment(commentId){
     throw error;
   }
 }
+
+async function getCommentsByUserId(userId) {
+  try{
+    const { rows } = await db.query(`
+    SELECT * 
+    FROM comments 
+    WHERE "userId" = $1`, [userId]
+    );
+    return rows;
+  } catch (error){
+    throw error;
+  }
+}
 module.exports = {
   createComment,
   editComment,
   deleteComment,
   getCommentsByReviewId,
-  getCommentById
+  getCommentById, 
+  getCommentsByUserId
 }
