@@ -11,6 +11,7 @@ const users = [
     name: 'Emily Johnson',
     email: 'emily@example.com',
     password: 'securepass',
+    role: 'admin',
   },
   {
     name: 'Liu Wei',
@@ -31,6 +32,7 @@ const users = [
     name: 'John Smith',
     email: 'john@example.com',
     password: 'password123',
+    role: 'admin'
   },
   // Add more user objects as needed
 ]
@@ -137,7 +139,8 @@ const createUsersTable = async () => {
             id SERIAL PRIMARY KEY,
             name VARCHAR(255) DEFAULT 'name',
             email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL
+            password VARCHAR(255) NOT NULL, 
+            role VARCHAR(255) DEFAULT 'user'
         )`)
   } catch (err) {
     throw err

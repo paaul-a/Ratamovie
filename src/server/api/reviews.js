@@ -103,6 +103,7 @@ reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
   const { updatedReview } = req.body;
   try{
     const reviewToUpdate = await getReviewById(reviewId);
+    
     if(!reviewToUpdate) {
       return next({
         name: 'ReviewNotFound',

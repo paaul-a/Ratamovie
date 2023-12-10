@@ -6,10 +6,10 @@ const createUser = async({ name='first last', email, password }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
         const { rows: [ user ] } = await db.query(`
-        INSERT INTO users(name, email, password)
-        VALUES($1, $2, $3)
+        INSERT INTO users(name, email, password, role)
+        VALUES($1, $2, $3, $4)
         ON CONFLICT (email) DO NOTHING
-        RETURNING *`, [name, email, hashedPassword]);
+        RETURNING *`, [name, email, hashedPassword, 'user']);
 
         return user;
     } catch (err) {
@@ -72,10 +72,22 @@ const getUserById = async(userId) => {
     }
 
 }
+const getAllUsers = async () => {
+    try {
+        const { rows: users } = await db.query(`
+        SELECT id, name, email, role
+        FROM users;
+        `);
+        return users;
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
     createUser,
     getUser,
     getUserByEmail,
-    getUserById
+    getUserById,
+    getAllUsers
 };

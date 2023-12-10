@@ -103,13 +103,24 @@ async function deleteReview(reviewId) {
   }
 }
 
-async function editReview(reviewId, updatedReview) {
+async function editReview(reviewId, updatedReviewData) {
+  const { content, rating } = updatedReviewData;
   try{
-    await db.query(`
+    const { rowCount } = await db.query(`
     UPDATE reviews
-    SET content =$1
-    WHERE id = $2`, [updatedReview, reviewId]
+    SET content = $1, rating = $2
+    WHERE id = $3
+    RETURNING *`, [content, rating, reviewId]
     );
+    if (rowCount === 0) {
+      throw {
+        name: 'ReviewNotFoundError',
+        message: `Review with ID ${reviewId} not found.`,
+      };
+    }
+    const updatedReview = await getReviewById(reviewId);
+    return updatedReview;
+
   } catch (error){
     throw error;
   }
