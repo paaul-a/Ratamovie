@@ -65,13 +65,13 @@ async function getAllReviews() {
     throw error;
   }
 }
-async function getUserReview() {
+async function getUserReview(userId) {
   try {
     const { rows: reviewIds } = await db.query(`
         SELECT id
         FROM reviews
-        WHERE "userId"=${userId};
-      `)
+        WHERE "userId"=$1;
+      `, [userId])
 
     const reviews = await Promise.all(
       reviewIds.map((review) => getReviewById(review.id))
@@ -140,6 +140,7 @@ async function editReview(reviewId, updatedReviewData) {
 module.exports = {
   createReview,
   getReviewByMovieId,
+  getUserReview,
   getReviewByMovieAndUser,
   getReviewById,
   deleteReview,

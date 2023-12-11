@@ -3,7 +3,7 @@ import Register from './Register';
 
 
 
-const Login = () => {
+const Login = ({setToken, setUserId}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -29,12 +29,30 @@ const Login = () => {
             })
         });
         const result = await response.json();
+        console.log('login result:', result)
+        console.log('token result:', result.token)
+        // console.log('id result:', result.id)
+
+        // console.log('userId:', result.user?.id);
+        // setUserId(result.user?.id);
+
+
+        // Adjust this line based on the actual structure of the result object
+        // setUserId(result.id || result.user?.id);
+
+        // const userId = result.id || result.user?.id;
+        // console.log('userId:', userId)
+
+        // setUserId(userId);
+        setToken(result.token);
         setMessage(result.message);
+
         if(!response.ok) {
           throw(result)
         }
         setEmail('');
         setPassword('');
+
     } catch (err) {
         console.error(`${err.name}: ${err.message}`);
     }
@@ -56,7 +74,7 @@ const Login = () => {
 
           <div className="login">
             <form onSubmit={handleSubmit}>
-              <label for="chk" aria-hidden="true">Login</label>
+              <label htmlFor="chk" aria-hidden="true">Login</label>
               <input type="email" placeholder={"Email"} value={email} 
                 onChange={handleEmailChange} required />
               

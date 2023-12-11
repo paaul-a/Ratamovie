@@ -2,40 +2,50 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
-function Account({ token, setToken }) {
+function Account({ token }) {
   const [userData, setUserData] = useState({});
   const [reviewedMovies, setReviewedMovies] =useState([]);
   let API = "http://localhost:3000/api"
 
-  const { id } = userParams();
-  
+  const { id } = useParams();
   useEffect(() =>{
-    fetchAccount();
-    fetchReviewedMovies();
-  }, []);
-
-  async function fetchAccount(userId) {
-    try {
-      const response = await fetch (`${API}/users/${userId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-      });
-
-      const result = await response.json();
-      setUserData(result);
-
-    } catch(err) {
-      console.error(err)
-    }
-  }
+    
+    console.log('id:', id)
+    console.log('token:', token)
   
-  async function fetchAccount(){
+    console.log('id:', id)
+    fetchAccount(token);
+  
+    //fetchReviewedMovies();
+  }, [token]);
+
+  // async function fetchAccount(userId) {
+  //   try {
+  //     console.log('token:', token)
+  //     const response = await fetch (`${API}/users/${userId}`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Authorization": `Bearer ${token}`
+  //       },
+  //     });
+
+  //     const result = await response.json();
+  //     console.log("account result 1:", result)
+
+  //     setUserData(result);
+
+  //   } catch(err) {
+  //     console.error(err)
+  //   }
+  // }
+  
+  async function fetchAccount(userId){
       if (token){
+        console.log('token:', token)
+
         try{ 
-          const response = await fetch (`${API}/users/me`,
+          const response = await fetch (`${API}/users/${userId}`,
           {
           headers:{
             'Content-Type': 'application/json',
@@ -43,6 +53,7 @@ function Account({ token, setToken }) {
           },
         });
         const result = await response.json();
+        console.log("account result 2:", result)
         setUserData(result);
       }catch(error){
         console.error(error.message)
@@ -52,6 +63,7 @@ function Account({ token, setToken }) {
       
     }
   }
+  
   async function fetchReviewedMovies(){
     if (token){
       try{
@@ -94,37 +106,27 @@ function Account({ token, setToken }) {
       console.error('Error updating your profile:', error.message);
     }
   };
-    return (
-      <div>
-        { token ? (
-            <div>
-          <h2>My Account</h2>
-              <p>Name: {userData.firstname} {userData.lastname}</p>
-              <p>Username: {userData.email}</p>
-         <h3>Reviewed Movies:</h3>
-         { reviewedMovies.length > 0 ? (
 
-         <ul>    
-          {reviewedMovies.map((movie) => {
-            return (
-                <li key={movie.id}>
-                  {movie.title}
-                  {movie.year}
-                  {/* {movie.userid.review} */}
-                  {/*CHANGE THIS TO BE WHEN U CLICK ON THE REVIEW YOU GET THE SINGLE PAGE RENDERED <button onClick={() => handleReturn(book.id)}>Return</button> */}
-                </li>
-            )
-          } )}
-         </ul>
-         ) : (
-          <h2> You havent reserved any movies yet!!</h2>
-         )}
-    </div>
-         ) : (
-          <h3>Sorry! You are not logged in! Please login or register to see this page!</h3>
-         )}
-     </div>
-);
+
+  return (
+    <>
+        <div>
+          {token ? (
+            <div>
+              <h2>My Account</h2>
+              {userData.name && <p>Name: {userData.name}</p>}
+              {userData.email && <p>Email: {userData.email}</p>}
+              <h3>Reviewed Movies:</h3>
+              {/* Rest of the code */}
+            </div>
+            ) : (
+              <h3>Sorry! You are not logged in! Please login or register to see this page!</h3>
+            )}
+          </div>
+         
+        </>
+  );
+  
 }
 
 export default Account

@@ -7,6 +7,7 @@ const {
     getUser,
     getUserByEmail,
     getAllUsers,
+    getUserById
 
 } = require('../db');
 
@@ -43,6 +44,34 @@ try{ const userId = req.params.userId;
         res.status(500).json({ error: 'Internal Server Error'})
     }
 });
+
+usersRouter.get('/me', requireUser, async (req, res, next) => {
+    try {
+        const userId = req.params.userId === 'me' ? req.user.id : req.params.userId;
+        console.log('userId in api:', userId)
+
+        const user = await getUserById(userId);
+
+        // const user = await getUserById(req.user.id);
+
+        if(!user) {
+            return res.status(404).json({error: 'user not found'})
+        }
+
+        const userData = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        };
+        res.json(userData)
+
+    } catch(err) {
+    console.error(err)
+    res.status(500).json({ error: 'Internal Server Error' });
+
+    }
+    
+})
 
 usersRouter.post('/login', async(req, res, next) => {
     const { email, password } = req.body;

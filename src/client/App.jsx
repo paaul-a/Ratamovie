@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Navigate from './components/Navigate';
-import { Link, Routes, Route, useNavigate } from "react-router-dom";
+import { Link, Routes, Route, useNavigate, useParams } from "react-router-dom";
 import Login from './components/Login';
 import Movies from './components/Movies';
 import SingleMovie from './components/SingleMovie';
@@ -12,7 +12,11 @@ function App() {
   const [ token, setToken ] = useState(null);
   const [myReviews, setMyReviews] = useState([]);
   const [searchMovie, setSearchMovie] = useState('');
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
+
+  const {id} = useParams();
+
 
   const handleInputChange = (e) => {
     setSearchMovie(e.target.value);
@@ -40,7 +44,7 @@ function App() {
           <Link className="nav-link" to="/login">
             Login
           </Link>
-          <Link className="nav-link" to="/account">
+          <Link className="nav-link" to={`/users/${userId}`}>
             User
           </Link>
             <div className="search-bar">
@@ -58,9 +62,9 @@ function App() {
     <Routes> 
       <Route path="/movies" element={<Movies/>}/>
       <Route path='/movies/:id' element={<SingleMovie token={token} setMyReviews={setMyReviews}/>} />
-      <Route path="/login" element={<Login token={token} setToken={setToken}/>}/>
+      <Route path="/login" element={<Login userId={userId} setUserId={setUserId} token={token} setToken={setToken}/>}/>
       <Route path="/register" element={<Register token={token} setToken={setToken}/>}/>
-      <Route path="/account" element={<Account token={token} setToken={setToken} myReviews={myReviews}/>}/>
+      <Route path="/users/:userId" element={<Account userId={userId} setUserId={setUserId} token={token} setToken={setToken} myReviews={myReviews}/>}/>
     </Routes>
     </>
   );

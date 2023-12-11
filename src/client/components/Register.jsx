@@ -42,7 +42,7 @@ function Register({ setToken }) {
     <>
         <div className="signup">
           <form onSubmit={handleSubmit}>
-            <label for="chk" aria-hidden="true">Sign Up</label>
+            <label htmlFor="chk" aria-hidden="true">Sign Up</label>
             <input type="text" placeholder={"Name"} required="" value={name}
               onChange={(event) => setName(event.target.value)}/>
             <input type="email" placeholder={"Email"} required="" value={email}
