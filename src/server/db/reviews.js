@@ -87,14 +87,31 @@ async function getReviewByMovieAndUser(movieId, userId) {
 
 async function deleteReview(reviewId) {
   try {
-    const {rows: [review]} = await db.query(`
-      DELETE FROM comments
+    const { rows: [review] } = await db.query(`
+      DELETE FROM reviews
       WHERE id = $1
       RETURNING *`, [reviewId]);
+
+      if (!review) {
+        throw { name: 'ReviewNotFoundError', message: `Review with ID ${reviewId} not found`};
+      }
     
     return review;
-  } catch(err) {
-    throw err
+  } catch(error) {
+    console.error('Error deleting review:', error);
+    throw error
+  }
+}
+
+async function editReview(reviewId, updatedReview) {
+  try{
+    await db.query(`
+    UPDATE reviews
+    SET content =$1
+    WHERE id = $2`, [updatedReview, reviewId]
+    );
+  } catch (error){
+    throw error;
   }
 }
 
@@ -104,4 +121,5 @@ module.exports = {
   getReviewByMovieAndUser,
   getReviewById,
   deleteReview,
+  editReview
 }

@@ -51,8 +51,8 @@ apiRouter.use('/movies', moviesRouter);
 
 const reviewsRouter = require('./reviews');
 apiRouter.use('/reviews', reviewsRouter)
-apiRouter.use('/reviews/users', reviewsRouter)
-apiRouter.use('/:reviewId', reviewsRouter);
+// apiRouter.use('/reviews/users', reviewsRouter)
+// apiRouter.use('/:reviewId', reviewsRouter);
 
 const commentsRouter = require('./comments');
 apiRouter.use('/comments', commentsRouter)

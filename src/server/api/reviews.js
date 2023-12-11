@@ -10,6 +10,7 @@ const {
   createReview,
   getReviewById,
   deleteReview,
+  editReview
 } = require('../db/reviews');
 
 reviewsRouter.get('/:movieId', async (req, res, next) => {
@@ -37,7 +38,7 @@ reviewsRouter.get('/:movieId/users/:userId', async (req, res, next) => {
     next(err)
   }
 })
-
+//DONT KNOW IF WE ACTUALLY NEED THAT OR IT IS GONNA WORK THRU THE FRONT END??
 reviewsRouter.post('/', requireUser, async (req, res, next) => {
   const {content = "", rating, name, movieId} = req.body;
   const reviewData = {};
@@ -65,10 +66,13 @@ reviewsRouter.post('/', requireUser, async (req, res, next) => {
   } catch({name, message}) {
     next({name, message});
   }
-})
-reviewsRouter.delete('/:reviewId'), requireUser, async (req, res, next) => {
+});
+
+reviewsRouter.delete('/:reviewId', requireUser, async (req, res, next) => {
   try {
     const { reviewId } = req.params;
+    console.log('deleting review with ID', reviewId)
+
     const reviewToUpdate = await getReviewById(reviewId);
 
     if(!reviewToUpdate) {
@@ -84,76 +88,39 @@ reviewsRouter.delete('/:reviewId'), requireUser, async (req, res, next) => {
       });
     } else {
       const deletedReview = await deleteReview(reviewId)
-      res.send({success: true, ...deletedReview})
+      res.send({ success: true, deletedReview })
     }
 
 
   } catch(err) {
     next(err)
   }
-}
-// reviewData.patch('/:reviewId', requireUser, async (req, res, next) => {
-//   const { reviewId } = req.params;
-//   const { title, content } = req.body; //need content, comments?
+});
 
-//   const updateFields = {};
-
-//   if (tags && tags.length > 0) {
-//     updateFields.tags = tags.trim().split(/\s+/);
-//   }
-
-//   if (title) {
-//     updateFields.title = title;
-//   }
-
-//   if (content) {
-//     updateFields.content = content;
-//   }
-
-//   try {
-//     const originalReview = await getReviewByMovieId(postId);
-
-//     if (originalReview.author.id === req.user.id) {
-//       const updatedReview = await updateReview(reviewId, updateFields);
-//       res.send({ post: updatedReview })
-//     } else {
-//       next({
-//         name: 'UnauthorizedUserError',
-//         message: 'You cannot update a post that is not yours'
-//       })
-//     }
-//   } catch ({ name, message }) {
-//     next({ name, message });
-//   }
-// });
-
-// reviewsRouter.delete('/:reviewId', requireUser, async (req, res, next) => 
-// {
-//   try {
-//   const { reviewId } = req.params;
-//     const reviewToUpdate = await getReviewByMovieId(reviewId); 
-//     if (!reviewToUpdate){
-//       return next({
-//         name: 'PostNotFound', 
-//         message: 'Sorry that post was not found',
-//       });
-//     } 
-//      if (req.user.id !== reviewToUpdate.author.id){ //double check wher to put author and user and make sure that is consistent throughout 
-//       console.log('aut header:', req.headers.authorization);
-//       console.log('User associated w token:', req.user.id);
-//       console.log('reviewToUpdate:', reviewToUpdate.author.id);
-//       return res.status(403).send({
-//         success: false,
-//         message: 'Sorry you cant delete a post that doesnt belong to you',
-//       });
-//     }
-   
-//       const deletedReview = await deleteReview(reviewId);
-//       res.status(204).send({ success: true,deletedReview });
-    
-//   }catch ({name, message}){
-//     next({name, message});
-//   }
-// });
+reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
+  const { reviewId } = req.params;
+  console.log('updating review w ID', reviewId);
+  const { updatedReview } = req.body;
+  try{
+    const reviewToUpdate = await getReviewById(reviewId);
+    if(!reviewToUpdate) {
+      return next({
+        name: 'ReviewNotFound',
+        message: 'Sorry, that review wasnt found',
+      });
+    }
+    if (req.user.id !== reviewToUpdate.userId){
+      return res.status(403).send({
+        success: false, 
+        message: 'Sorry you cannot edit a post that is not yours!'
+      });
+    }
+    await editReview(reviewId, updatedReview);
+    res.status(200).json({ message: 'Content succesfull updated' });
+  } catch (error) {
+    console.error( 'Error updating Review: ', error);
+    res.status(500).json({ error: 'Internal Server Error'});
+  }
+});
 
 module.exports = reviewsRouter;
