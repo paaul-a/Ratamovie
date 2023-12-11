@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Register from './Register';
 
 
 
@@ -45,33 +46,74 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='email'>Email:</label>
-          <input
-            type='email'
-            id='email'
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
+    <>
+      <div className="login-body">
+        <div className="main">
+          <input type="checkbox" id="chk" aria-hidden="true" />
+          <div className="sign-up">
+              <Register />
+          </div>
+
+          <div className="login">
+            <form onSubmit={handleSubmit}>
+              <label for="chk" aria-hidden="true">Login</label>
+              <input type="email" placeholder={"Email"} value={email} 
+                onChange={handleEmailChange} required />
+              
+              <input type="password" placeholder={"Password"} value={password}
+              onChange={handlePasswordChange} required />
+
+              <button type="submit">Sign In</button>
+            </form>
+          </div>
+
+          {/* <div className="overlay-container">
+            <div className="overlay">
+              <div className="overlay-panel overlay-left">
+                <h1>Welcome Back!</h1>
+                <p>Please login with your personal info</p>
+                <button className="ghost" id="signIn">Sign In</button>
+              </div>
+              <div className="overlay-panel overlay-right">
+                <h1>Hello</h1>
+                <p>Enter your personal details to create an account</p>
+                <button className="ghost" id="signUp">Sign Up</button>
+              </div>
+            </div>
+          </div> */}
+
         </div>
-        <div>
-          <label htmlFor='password'>Password:</label>
-          <input
-            type='password'
-            id='password'
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
-        </div>
-        <button type='submit'>Login</button>
-      </form>
-      <p>{message}</p>
-    </div>
+      </div>
+    </>
+    // <div>
+    //   <h2>Login</h2>
+    //   <form onSubmit={handleSubmit}>
+    //     <div>
+    //       <label htmlFor='email'>Email:</label>
+    //       <input
+    //         type='email'
+    //         id='email'
+    //         value={email}
+    //         onChange={handleEmailChange}
+    //         required
+    //       />
+    //     </div>
+    //     <div>
+    //       <label htmlFor='password'>Password:</label>
+    //       <input
+    //         type='password'
+    //         id='password'
+    //         value={password}
+    //         onChange={handlePasswordChange}
+    //         required
+    //       />
+    //     </div>
+    //     <button type='submit'>Login</button>
+    //   </form>
+    //   <p>{message}</p>
+
+    //   <Register />
+    // </div>
   );
 };
 

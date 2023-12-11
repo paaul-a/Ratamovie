@@ -1,18 +1,454 @@
-.App {
+/* body {
+  margin: 0;
+  padding: 0;
+} */
+
+/* .App {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh; 
+} */
+
+.site-header .welcome{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  margin: 0px 200px;
+  margin-top: 400px;
+  z-index: 1;
+  
 }
 
-.App-header {
-  margin-bottom: 20px;
-  font-size: 24px;
+.site-header .welcome-button {
+  background-color: #BF6B21;
+  color: #fff;
+  padding: 8px 16px;
+  width: 95%;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #a85710; /* Darker shade for hover effect */
+  }
 }
 
-#comp-img{
-  width: 250px;
+
+.movies-container {
+  display: flex;
+  color:#fff;
+  text-align: center;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: -15px;
 }
+
+.popular {
+  color: #fff;
+  padding: 10px;
+  margin-top: -20px;
+  padding-left: 50px;
+  color: #99b7ccb0;
+
+
+}
+
+.popular hr {
+  margin-top: -15px;
+  margin-right: 35px;
+  border-top: 0.2px solid rgba(214, 222, 227, 0.181); /* Adjust thickness and color */
+
+}
+
+.movie-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 16px;
+  overflow: hidden;
+  width: 200px;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px 8px 0 0;
+}
+
+.movie-info h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.search-bar {
+  margin: 16px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
 
 /* Add more styling for other elements if needed */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: rgb(30, 30, 30);
+}
+
+.site-header {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background-image: url('https://imageio.forbes.com/specials-images/imageserve/6547cda2049eb16a6a4f08a1/-Saltburn--movie-poster/0x0.jpg?format=jpg&crop=1944,1093,x0,y809,safe&width=960');
+  background-position: center -15px;
+  background-size: cover;
+  height: 100vh;
+}
+
+/* Blend the backdrop image into the solid color */
+.site-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to bottom, rgba(44, 52, 64, 0) 0%, rgb(30, 30, 30) 100%);
+  z-index: 1;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  z-index: 2;
+  transition: background 0.3s ease;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 1.2em;
+}
+
+
+.navbar .nav-link {
+  margin-right: 15px;
+  font-size: medium;
+  transition: color 0.3s ease;
+  &:hover{
+    color: #acabab; /* Darker shade for hover effect */
+  }
+}
+
+.navbar .site-name {
+  margin-left: 0;
+  margin-right: auto;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.navbar .search-bar {
+  /* display: flex;
+  align-items: center;  */
+  margin-left: 40%;
+  color: white;
+}
+
+.navbar input[type="text"] {
+  padding: 8px;
+  border: none;
+  border-radius: 20px;
+  margin-right: 8px; 
+  color: white;
+  background-color: rgba(255, 255, 255, 0.3); /* Adjust the last value (0.3) for transparency */
+}
+
+.navbar input[type="text"]::placeholder {
+  color: #ffffff; 
+}
+
+
+.navbar button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #BF6B21;
+  color: #ffffffda;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #a85710; /* Darker shade for hover effect */
+  }
+}
+
+.scrolled {
+  background: rgba(44, 52, 64, 0.9);
+}
+
+
+/* ========================================================= */
+
+.singleMovie {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.singleMovie::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.movie-title,
+.movie-poster,
+.movie-des,
+.movie-reviews {
+  margin-bottom: 20px;
+}
+
+.movie-title {
+  color: #fff;
+  font-size: 1.2em;
+  /* border: 2px solid black; */
+  margin-top: -4%;
+}
+
+.movie-title p {
+  /* border: 2px solid black; */
+  margin-top: -5%;
+  color: #99b7ccb0;
+
+}
+
+.movie-des {
+  /* border: 2px solid black; */
+  padding-right: 10%;
+  color: #99b7ccb0;
+  margin-top: -3%;
+}
+
+.movie-reviews h3 {
+  color: #99b7ccb0;
+  font-size: medium;
+  margin-bottom: -1%;
+}
+
+.reviews {
+  color: #99b7ccb0;
+}
+
+.reviews hr {
+  border-top: 0.2px solid rgba(214, 222, 227, 0.343); /* Adjust thickness and color */
+  margin: 20px 0;
+}
+
+
+
+.movie-poster img {
+  max-width: 300px;
+  float: left;
+  margin-right: 20px;
+  /* border: 2px solid black; */
+  padding-bottom: 60px;
+}
+
+
+.movie-title,
+.movie-des,
+.movie-reviews {
+  overflow: hidden;
+}
+
+.movie-title h2,
+.movie-des h4,
+.reviews {
+  margin-top: 10px;
+}
+
+.user-review {
+  color:#fff;
+  border: 1px solid #6c8da3;
+  background-color: #6c8da3;
+  box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-right: 70px;
+  padding-bottom: 10px;
+}
+.user-review p {
+  margin-left: 8px;
+}
+
+.user-review .star-rating {
+  font-size: 20px;
+}
+.user-review h5 {
+  margin-left: 8px;
+  margin-bottom: -5px;
+
+}
+
+.user-review hr {
+  margin: 8px;
+  border-radius: 10px;
+  
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.review-input {
+  width: 90%;
+  padding: 10px;
+  padding-bottom: 100px;
+  margin: 8px;
+  border: 1px solid #ddd; 
+  border-radius: 4px;
+}
+
+.save-button {
+  background-color: #BF6B21;
+  color: #fff;
+  padding: 8px 16px;
+  width: 95%;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #a85710; /* Darker shade for hover effect */
+  }
+}
+
+/* 
+===============================================================
+  LOGIN/REGISTER FORM 
+===============================================================
+  */
+
+.login-body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Jost', sans-serif;
+  /* background: linear-gradient(to bottom, #D9AC25, #D9981E, #BF6B21); */
+}
+
+.main {
+  width: 350px;
+	height: 500px;
+	background: red;
+	overflow: hidden;
+	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+  background: linear-gradient(to bottom, #f19c41, #ffc861, #df7b24);
+
+}
+
+#chk {
+  display: none;
+}
+
+.signup {
+  position: relative;
+	width:100%;
+	height: 100%;
+}
+
+.main label{
+	color: #fff;
+	font-size: 2.3em;
+	justify-content: center;
+	display: flex;
+	margin: 60px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: .5s ease-in-out;
+}
+
+.main input{
+	width: 60%;
+	height: 20px;
+	background: #e0dede;
+	justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 10px;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+}
+
+.main button{
+	width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+	background: #e78632;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 20px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+.main button:hover{
+	background: #d0792c;
+}
+
+.login{
+	height: 460px;
+	background: #eee;
+	border-radius: 60% / 10%;
+	transform: translateY(-40px);
+	transition: .8s ease-in-out;
+}
+.login label{
+	color: #e78632;
+	transform: scale(.6);
+}
+
+#chk:checked ~ .login{
+	transform: translateY(-330px);
+}
+#chk:checked ~ .login label{
+	transform: scale(1);	
+}
+#chk:checked ~ .signup label{
+	transform: scale(.6);
+}
+
+

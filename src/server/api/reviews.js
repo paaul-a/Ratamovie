@@ -19,7 +19,7 @@ reviewsRouter.get('/:movieId', async (req, res, next) => {
   try {
     const reviews = await getReviewByMovieId(movieId);
   
-    res.send({
+    res.json({
       reviews
     });
   } catch (error) {

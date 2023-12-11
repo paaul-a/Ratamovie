@@ -21,17 +21,22 @@ moviesRouter.get('/', async (req, res, next) => {
 
 moviesRouter.get('/:movieId', async (req, res, next) =>{
   const { movieId } = req.params;
-try{
-  const movie = await getMovieById(movieId);
-  if (movie){
-    res.json(movie);
-  } else{
-    res.status(404).json({ error: 'Movie not found' });
+  
+  const movieIdInt = parseInt(movieId);
+  if (isNaN(movieIdInt)) {
+    return res.status(400).json({ error: 'Invalid movie ID' });
   }
-} catch (error) {
-  console.error('Error fetching movie by ID:', error);
-  res.status(500).json({ error: 'Internal Server Error' });
-}
+  try{
+    const movie = await getMovieById(movieId);
+    if (movie){
+      res.send(movie);
+    } else{
+      res.status(404).json({ error: 'Movie not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching movie by ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 moviesRouter.patch('/:movieId', requireAdmin, async (req, res, next) => 

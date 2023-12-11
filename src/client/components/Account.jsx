@@ -1,15 +1,36 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
-function Account({ token }) {
+function Account({ token, setToken }) {
   const [userData, setUserData] = useState({});
   const [reviewedMovies, setReviewedMovies] =useState([]);
   let API = "http://localhost:3000/api"
+
+  const { id } = userParams();
   
   useEffect(() =>{
     fetchAccount();
     fetchReviewedMovies();
   }, []);
+
+  async function fetchAccount(userId) {
+    try {
+      const response = await fetch (`${API}/users/${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      });
+
+      const result = await response.json();
+      setUserData(result);
+
+    } catch(err) {
+      console.error(err)
+    }
+  }
   
   async function fetchAccount(){
       if (token){

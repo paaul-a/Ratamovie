@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+
 import Axios from 'axios'
 
 let API = 'http://localhost:3000/api'
 
 
 function Movies() {
- 
   const [searchMovie, setSearchMovie] = useState("");
-
   const [movies, setMovies] = useState([]);
+  const navigate = useNavigate();
+
+  const{ id } = useParams();
+  const backdropImageUrl = "https://imageio.forbes.com/specials-images/imageserve/6547cda2049eb16a6a4f08a1/-Saltburn--movie-poster/0x0.jpg?format=jpg&crop=1944,1093,x0,y809,safe&width=960";
+
 
   useEffect(() => {
     fetchMovies();
@@ -18,21 +22,17 @@ function Movies() {
 
   async function fetchMovies() {
     try {
-      //  fix this const data = movies make array obj of movies
-     
       const { data } = await Axios.get(`${API}/movies`);
-
-      
-
-
+      // console.log(data.movies)
       setMovies(data.movies);
 
     } catch (error) {
       console.error('Error fetching movies:', error.message);
-      
     }
-    
-    
+  }
+
+  const handleClick = (movieId) => {
+    navigate(`/movies/${movieId}`)
   }
 
   const handleInputChange = (e) => {
@@ -47,32 +47,53 @@ function Movies() {
     );
   };
   
-
   return (
     <>
-      <div className='movies-container'>
-        <h2>Popular Movies</h2>
-        <input 
-         className="search-bar"
-          type="text"
-          placeholder="Search by movie title or director..."
-          value={searchMovie}
-          onChange={handleInputChange}
-        />
-        {
-          movies.length ? (
-            filterMovie().map((movie) => {
-              return <div key={movie.id}>
-                <Link className="details-link" to={`/details/${movie.id}`}>
-  <img src={movie.img} alt={movie.title} />
-</Link>
-              </div>
-            })
+      {/* <header className="site-header">
+      <div id="backdrop" className="backdrop-wrapper -loaded" data-offset="15" style={{ backgroundImage: `url(${backdropImageUrl})` }}>
+        <div className="header-content">
+        </div>
+      </div>
+    </header> */}
+      {/* <header>
+        <div className="welcome">
+          <h1>Welcome to RataMovie! A place to review and rate your favorite movies</h1>
+        </div>
+        <div className="router-button">
+          <button>Sign In or Become a Rat</button>
+        </div>
+      </header> */}
+     
+  
+      <div className="app">
+        <div className='popular'>
+          <h3>POPULAR MOVIES</h3>
+          <hr />
+        </div>
+        <div className='movies-container'>
+      
+          {/* <input 
+            className="search-bar"
+            type="text"
+            placeholder="Search by movie title or director..."
+            value={searchMovie}
+            onChange={handleInputChange}
+          /> */}
+          {
+            movies.length ? (
+              filterMovie().map((movie) => {
+                return <div key={movie.id} className="movie-card">
+                  <img src={movie.image} onClick={() => handleClick(movie.id)} alt={movie.title} />
+                  <div className="movie-info">
+                    <h2>{movie.title}</h2>
+                  </div>
+                </div>
+              })
             )  :
             <h2>Loading...</h2>
-        }
+          }
+        </div>
       </div>
-    
     </>
   );
 
