@@ -10,6 +10,7 @@ const {
   createReview,
   getReviewById,
   deleteReview,
+  getUserReview,
   editReview
 } = require('../db/reviews');
 
@@ -17,7 +18,7 @@ reviewsRouter.get('/:movieId', async (req, res, next) => {
   const movieId = req.params.movieId
 
   try {
-    const reviews = await getReviewByMovieId(movieId);
+    const reviews = await getReviewByMovieId(movieId, userId);
   
     res.json({
       reviews

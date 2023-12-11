@@ -65,8 +65,8 @@ function SingleMovie({token, setMyReviews}) {
     }
   }
 
-  async function handleReview() {
-    
+  async function handleReview(event) {
+    event.preventDefault()
     try {
       const response = await fetch(`${API}/movies/${id}/reviews`,{
         method: "POST",
@@ -146,9 +146,9 @@ function SingleMovie({token, setMyReviews}) {
                 
                 <h5>Review Movie</h5> 
                 <hr />
-                <form className="review-form">
+                <form onSubmit={handleReview} className="review-form">
                   <input className="review-input" type="text" name="review" placeholder="Add a review..."></input>
-                  <button onClick={handleReview} className="save-button" type="submit">SAVE</button>
+                  <button className="save-button" type="submit">SAVE</button>
                 </form>
 
               </div>
