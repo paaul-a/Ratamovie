@@ -4,7 +4,8 @@ const moviesRouter = express.Router();
 
 const { getAllMovies, 
   getMovieById
-} = require('../db/movies')
+} = require('../db/movies');
+const { requireAdmin } = require('./utils');
 
 moviesRouter.get('/', async (req, res, next) => {
   try {
@@ -33,4 +34,15 @@ try{
 }
 });
 
+moviesRouter.patch('/:movieId', requireAdmin, async (req, res, next) => 
+{
+  const { movieId } = req.params;
+  const { image, description } = req.body.updatedMovie;
+  try{
+    const updatedMovie = await editMovie(movieId, { image, description });
+    res.status(200).json(updatedMovie);
+  } catch (error){
+    next(error)
+  }
+});
 module.exports =  moviesRouter; 

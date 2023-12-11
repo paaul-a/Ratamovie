@@ -8,6 +8,7 @@ const {
   getCommentById,
   deleteComment,
   editComment,
+  getCommentsByUserId,
 } = require('../db/comments');
 
 commentsRouter.get('/:reviewId', async (req, res, next) => {
@@ -48,7 +49,16 @@ commentsRouter.post('/', requireUser, async (req, res, next) =>{
   }
 })
 //NEED A GET COMMENT BY ID?????
-//DO I NEED TO HAVE SOME SORT OF RETURN BC THESE FUNCTIOSN WORK JUST NOT SURE
+commentsRouter.get('/user/:userId', async (req, res, next) => {
+  try{
+    const { userId } = req.params;
+    const comments = await getCommentsByUserId(userId);
+    res.send(comments);
+  } catch (error){
+    next (error);
+  }
+});
+
 commentsRouter.patch('/:commentId', requireUser, async (req, res, next) =>{
   const { commentId } = req.params;
   const { updatedContent } = req.body;
