@@ -65,7 +65,6 @@ const getUserById = async(userId) => {
                 message: "A user with that id does not exist"
             })
         }
-        //user.reviews = await getReviewByUser(userId)
         return user
     } catch(error) {
         throw error;
