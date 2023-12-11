@@ -1,6 +1,6 @@
 const express = require('express');
 const reviewsRouter = express.Router();
-const { requireUser } = require('./utils');
+const { requireUser, requireAdmin } = require('./utils');
 
 
 
@@ -103,6 +103,7 @@ reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
   const { updatedReview } = req.body;
   try{
     const reviewToUpdate = await getReviewById(reviewId);
+    
     if(!reviewToUpdate) {
       return next({
         name: 'ReviewNotFound',
@@ -122,5 +123,52 @@ reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
     res.status(500).json({ error: 'Internal Server Error'});
   }
 });
+
+
+//ADMIN ROUTES FOR EDIT AND DELETE BELOW
+reviewsRouter.delete('admin/:reviewId', requireAdmin, async (req, res, next) => {
+  try {
+    const { reviewId } = req.params;
+    console.log('deleting review with ID', reviewId)
+
+    const reviewToUpdate = await getReviewById(reviewId);
+
+    if(!reviewToUpdate) {
+      return next ({
+        name: "NotFound",
+        message: `No review found by ID ${reviewId}`
+      })
+    }  else {
+      const deletedReview = await deleteReview(reviewId)
+      res.send({ success: true, deletedReview })
+    }
+
+
+  } catch(err) {
+    next(err)
+  }
+});
+
+reviewsRouter.patch('/admin/:reviewId', requireAdmin, async (req, res, next) =>{
+  const { reviewId } = req.params;
+  console.log('updating review w ID', reviewId);
+  const { updatedReview } = req.body;
+  try{
+    const reviewToUpdate = await getReviewById(reviewId);
+    
+    if(!reviewToUpdate) {
+      return next({
+        name: 'ReviewNotFound',
+        message: 'Sorry, that review wasnt found',
+      });
+    }
+    await editReview(reviewId, updatedReview);
+    res.status(200).json({ message: 'Content succesfull updated' });
+  } catch (error) {
+    console.error( 'Error updating Review: ', error);
+    res.status(500).json({ error: 'Internal Server Error'});
+  }
+});
+
 
 module.exports = reviewsRouter;

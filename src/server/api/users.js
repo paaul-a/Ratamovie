@@ -1,17 +1,18 @@
 const express = require('express')
 const usersRouter = express.Router();
+const { requireAdmin, requireUser } = require('./utils');
 
 const {
     createUser,
     getUser,
     getUserByEmail,
     getAllUsers,
-    getUserById,
+
 } = require('../db');
 
 const jwt = require('jsonwebtoken')
 
-usersRouter.get('/', async( req, res, next) => {
+usersRouter.get('/', requireAdmin, async( req, res, next) => {
     try {
         const users = await getAllUsers();
 
@@ -20,6 +21,26 @@ usersRouter.get('/', async( req, res, next) => {
         });
     } catch ({name, message}) {
         next({name, message})
+    }
+});
+
+usersRouter.get('/:userId', requireUser, async ( req, res, next) => 
+{
+try{ const userId = req.params.userId;
+     const user = await getUserById(userId);
+        if (!user) {
+            return res.status(404).json ({ error: 'User not found' });
+        }
+            const userData = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+            };
+    
+        res.json(userData);     
+    } catch(error){
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error'})
     }
 });
 
