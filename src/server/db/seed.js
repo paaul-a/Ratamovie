@@ -58,7 +58,7 @@ const reviews = [
     content: "Epic movie",
     rating: 3,
     name: "John Smith",
-    email: "johna@example.com",
+    email: "john@example.com",
     movieId: 10,
     userId: 5,
   },
@@ -205,7 +205,8 @@ const insertUsers = async () => {
         name: user.name,
         email: user.email,
         password: user.password,
-      })
+        role: user.role || 'user',
+      });
     }
     console.log('User Data Successfully Seeded')
   } catch (error) {

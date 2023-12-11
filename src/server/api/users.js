@@ -15,6 +15,7 @@ const jwt = require('jsonwebtoken')
 
 usersRouter.get('/', requireAdmin, async( req, res, next) => {
     try {
+        console.log('user info from token:', req.user);
         const users = await getAllUsers();
 
         res.send({
