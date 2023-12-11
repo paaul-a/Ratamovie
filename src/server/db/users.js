@@ -16,6 +16,9 @@ const createUser = async({ name='first last', email, password }) => {
         throw err;
     }
 }
+// const getAllUsers = async({}) => {
+
+//}
 
 const getUser = async({email, password}) => {
     if(!email || !password) {

@@ -47,6 +47,7 @@ apiRouter.use('/users', usersRouter);
 
 const moviesRouter = require('./movies');
 apiRouter.use('/movies', moviesRouter);
+//apiRouter.use('/:movieId', moviesRouter);
 
 const reviewsRouter = require('./reviews');
 apiRouter.use('/reviews', reviewsRouter)
