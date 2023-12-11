@@ -16,13 +16,22 @@ function requireUser(req, res, next) {
 }
 
 const requireAdmin = (req, res, next) => {
+  try {
   if (!req.user){
+    console.log('no user info found')
     return res.status(401).json({ error: 'Unauthorized - Admin privileges required'})
   }
+  console.log('User role:', req.user.role);
   if (req.user.role !== 'admin'){
+    console.log('user does not have admin priveleges')
     return res.status(403).json({ error: 'Forbidden - Admin privileges required'})
   }
+  console.log('admin privs granted')
   next();
+  } catch (error){
+    console.error('error in middleware:', error);
+    res.status(500).json({ error: 'internal server error' })
+  }
 };
 module.exports = {
   requireUser,
