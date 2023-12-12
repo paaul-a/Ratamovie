@@ -72,7 +72,7 @@ function SingleMovie({token, setMyReviews}) {
 
   async function fetchComments() {
     try {
-      const {data} = await axios.get(`${API}/comments`);
+      const { data } = await axios.get(`${API}/comments`);
 
     } catch(err) {
       console.error("Error fetch comments", err.message)
