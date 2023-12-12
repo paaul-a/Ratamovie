@@ -148,7 +148,7 @@ reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
 
 
 //ADMIN ROUTES FOR EDIT AND DELETE BELOW
-reviewsRouter.delete('admin/:reviewId', requireAdmin, async (req, res, next) => {
+reviewsRouter.delete('/admin/:reviewId', requireAdmin, async (req, res, next) => {
   try {
     const { reviewId } = req.params;
     console.log('deleting review with ID', reviewId)

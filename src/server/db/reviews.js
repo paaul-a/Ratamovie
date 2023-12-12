@@ -111,6 +111,11 @@ async function getReviewByMovieAndUser(movieId, userId) {
 
 async function deleteReview(reviewId) {
   try {
+    await db.query('BEGIN');
+    await db.query(`
+    DELETE FROM comments
+    WHERE "reviewId" = $1`, [reviewId]);
+
     const { rows: [review] } = await db.query(`
       DELETE FROM reviews
       WHERE id = $1
@@ -119,9 +124,12 @@ async function deleteReview(reviewId) {
       if (!review) {
         throw { name: 'ReviewNotFoundError', message: `Review with ID ${reviewId} not found`};
       }
+      
+      await db.query('COMMIT');
     
     return review;
   } catch(error) {
+    await db.query('ROLLBACK')
     console.error('Error deleting review:', error);
     throw error
   }
