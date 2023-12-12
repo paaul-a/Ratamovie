@@ -11,8 +11,18 @@ const {
   getReviewById,
   deleteReview,
   getReviewByUserId,
-  editReview
+  editReview,
+  getAllReviews
 } = require('../db/reviews');
+
+reviewsRouter.get('/', requireAdmin, async(req, res, next) => {
+  try{
+    const reviews = await getAllReviews();
+    res.json({ reviews });
+  } catch (error){
+    next(error);
+  }
+});
 
 reviewsRouter.get('/:movieId', async (req, res, next) => {
   const movieId = req.params.movieId
@@ -40,7 +50,7 @@ reviewsRouter.get('/:movieId/users/:userId', async (req, res, next) => {
   }
 })
 
-reviewsRouter.get('/users/:userId', async (req, res, next) => {
+reviewsRouter.get('/me/:userId', async (req, res, next) => {
   const userId  = req.params.userId;
   try{
     const reviews = await getReviewByUserId(userId);

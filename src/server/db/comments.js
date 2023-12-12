@@ -1,5 +1,18 @@
 const db = require('./client')
 
+
+async function getAllComments(){
+  try{
+    const { rows: comments } = await db.query(`
+    SELECT *
+    FROM comments
+    `);
+    return comments;
+  }catch(error){
+    throw error;
+  }
+}
+
 async function createComment(comments) {
   const { rows: [ comment ]} =  await db.query(
       `INSERT INTO comments(content, "reviewId", "userId")
@@ -59,12 +72,12 @@ async function deleteComment(commentId){
 
 async function getCommentsByUserId(userId) {
   try{
-    const { rows } = await db.query(`
+    const { rows: comments } = await db.query(`
     SELECT * 
     FROM comments 
-    WHERE "userId" = $1`, [userId]
-    );
-    return rows;
+    WHERE "userId" = $1
+    `, [userId]);
+    return comments;
   } catch (error){
     throw error;
   }
@@ -75,5 +88,6 @@ module.exports = {
   deleteComment,
   getCommentsByReviewId,
   getCommentById, 
-  getCommentsByUserId
+  getCommentsByUserId,
+  getAllComments
 }
