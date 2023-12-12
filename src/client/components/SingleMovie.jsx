@@ -36,6 +36,11 @@ function SingleMovie({token, setMyReviews}) {
   const [movie, setMovie] = useState({});
   const [reviews, setReviews] = useState([]);
   const [userRating, setUserRating] = useState(0);
+  const [content, setContent] = useState("")
+  const [userName, setUserName] = useState("");
+  const [movieId, setMovieId] = useState(0);
+  const [userId, setUserId] = useState(0);
+  
   const [newReview, setNewReview] = useState("");
   const [isReviewing, setIsReviewing] = useState(false);
 
@@ -66,35 +71,51 @@ function SingleMovie({token, setMyReviews}) {
   }
 
   async function handleReview(event) {
-    event.preventDefault()
+    event.preventDefault();
+  
     try {
-      const response = await fetch(`${API}/movies/${id}/reviews`,{
+      const response = await fetch(`${API}/reviews`, {
         method: "POST",
-          // {review: newReview, rating: userRating}, //check backend inputs in the database so they match
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            review: newReview,
-            rating: userRating
-          })
-        });
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          content: content,
+          rating: userRating,
+          name: userName,
+          movieId: movie.id,
+          userId: userId
+        }),
+      });
+  
       console.log("Review submitted successfully!");
-      // const { data } = await axios.get(`${API}/movies/${id}/reviews`);
-      const result = await response.json()
-      console.log("handleReview result in singleMovie:", result)
-      setReviews(result);
-      setMyReviews(result)
-      setNewReview("");
-      setUserRating(0);
-      
-      // setIsReviewing(false);
+      const result = await response.json();
+      console.log("Response from server:", result);
+
+  
+      // Check if the result is an object with review details
+    if (result.id) {
+      // Update the state by adding the new review to the existing reviews array
+      setReviews(prevReviews => [...prevReviews, result]);
+      setMyReviews(prevReviews => [...prevReviews, result]);
+    } else {
+      console.error("Invalid response format: ", result);
+    }
+
+    //setNewReview();
+    setContent("");
+    setUserRating(0);
+    setUserName("");
+    setMovieId(0);
+    setUserId(0);
+
     } catch (error) {
       console.error("Error submitting review: ", error.message);
     }
   }
 
+  
 
   const averageRating = calculateAverageRating(reviews);
 
@@ -132,6 +153,7 @@ function SingleMovie({token, setMyReviews}) {
               <hr />
               {reviews.map((review) => (
                 <div className="reviews" key={review.id}>
+                  {console.log("Rendered Review:", review)}
                   <p>
                     Review by {review.name} <StarRating rating={review.rating} />
                   </p>
@@ -146,9 +168,9 @@ function SingleMovie({token, setMyReviews}) {
                 
                 <h5>Review Movie</h5> 
                 <hr />
-                <form onSubmit={handleReview} className="review-form">
-                  <input className="review-input" type="text" name="review" placeholder="Add a review..."></input>
-                  <button className="save-button" type="submit">SAVE</button>
+                <form className="review-form">
+                  <input className="review-input" type="text" name="review" placeholder="Add a review..." value={content} onChange={(e) => setContent(e.target.value)}></input>
+                  <button onClick={handleReview} className="save-button" type="submit">SAVE</button>
                 </form>
 
               </div>
