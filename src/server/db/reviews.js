@@ -12,6 +12,19 @@ async function createReview(reviews) {
   return review
 }
 
+async function getReviewByUserId(userId){
+  try {
+    const { rows: reviews } = await db.query(`
+    SELECT * 
+    FROM reviews
+    WHERE "userId" = $1
+    `, [userId]);
+    console.log('retrieved reviews:', reviews);
+    return reviews;
+  } catch (error) {
+    throw error;
+  }
+}
 async function getReviewByMovieId(movieId) {
   try {
     const { rows: reviews } = await db.query(
@@ -65,21 +78,21 @@ async function getAllReviews() {
     throw error;
   }
 }
-async function getUserReview(userId) {
-  try {
-    const { rows: reviewIds } = await db.query(`
-        SELECT id
-        FROM reviews
-        WHERE "userId"=$1;
-      `, [userId])
+// async function getUserReview(userId) {
+//   try {
+//     const { rows: reviewIds } = await db.query(`
+//         SELECT id
+//         FROM reviews
+//         WHERE "userId"=$1;
+//       `, [userId])
 
-    const reviews = await Promise.all(
-      reviewIds.map((review) => getReviewById(review.id))
-    )
-  } catch (error) {
-    throw error
-  }
-}
+//     const reviews = await Promise.all(
+//       reviewIds.map((review) => getReviewById(review.id))
+//     )
+//   } catch (error) {
+//     throw error
+//   }
+// }
 
 async function getReviewByMovieAndUser(movieId, userId) {
   try {
@@ -140,10 +153,10 @@ async function editReview(reviewId, updatedReviewData) {
 module.exports = {
   createReview,
   getReviewByMovieId,
-  getUserReview,
   getReviewByMovieAndUser,
   getReviewById,
   deleteReview,
   editReview, 
-  getAllReviews
+  getAllReviews,
+  getReviewByUserId
 }

@@ -10,7 +10,7 @@ const {
   createReview,
   getReviewById,
   deleteReview,
-  getUserReview,
+  getReviewByUserId,
   editReview
 } = require('../db/reviews');
 
@@ -39,6 +39,17 @@ reviewsRouter.get('/:movieId/users/:userId', async (req, res, next) => {
     next(err)
   }
 })
+
+reviewsRouter.get('/users/:userId', async (req, res, next) => {
+  const userId  = req.params.userId;
+  try{
+    const reviews = await getReviewByUserId(userId);
+    console.log('reviews sent in response: ', reviews);
+    res.json({ reviews });
+  } catch (error){
+    next(error);
+  }
+});
 //DONT KNOW IF WE ACTUALLY NEED THAT OR IT IS GONNA WORK THRU THE FRONT END??
 reviewsRouter.post('/', requireUser, async (req, res, next) => {
   const {content = "", rating, name, movieId} = req.body;
