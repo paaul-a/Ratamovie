@@ -24,19 +24,14 @@ function Movies() {
   }, [])
 
   async function fetchMovies() {
-    try {
-      //  fix this const data = movies make array obj of movies
-     
+    try {     
       const { data } = await Axios.get(`${API}/movies`);
       // console.log(data.movies)
       setMovies(data.movies);
 
     } catch (error) {
       console.error('Error fetching movies:', error.message);
-      
     }
-    
-    
   }
 
   const handleClick = (movieId) => {

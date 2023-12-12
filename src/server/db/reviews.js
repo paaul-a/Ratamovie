@@ -25,6 +25,7 @@ async function getReviewByUserId(userId){
     throw error;
   }
 }
+
 async function getReviewByMovieId(movieId) {
   try {
     const { rows: reviews } = await db.query(

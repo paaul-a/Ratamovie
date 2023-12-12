@@ -14,6 +14,25 @@ const {
   editReview
 } = require('../db/reviews');
 
+reviewsRouter.get('/me', requireUser, async (req, res, next) => {
+  console.log('req.user:', req.user);
+  try{
+    const userId  = req.user.id;
+    const user = req.user;
+    const reviews = await getReviewByUserId(userId);
+
+    const userWithReviews = {
+      ...user,
+      reviews: reviews,
+    };
+
+    console.log('User details with reviews:', userWithReviews);
+    res.json(userWithReviews);
+  } catch (error){
+    next(error);
+  }
+});
+
 reviewsRouter.get('/:movieId', async (req, res, next) => {
   const movieId = req.params.movieId
 
@@ -40,16 +59,19 @@ reviewsRouter.get('/:movieId/users/:userId', async (req, res, next) => {
   }
 })
 
-reviewsRouter.get('/users/:userId', async (req, res, next) => {
-  const userId  = req.params.userId;
-  try{
-    const reviews = await getReviewByUserId(userId);
-    console.log('reviews sent in response: ', reviews);
-    res.json({ reviews });
-  } catch (error){
-    next(error);
-  }
-});
+// reviewsRouter.get('/me/:userId', async (req, res, next) => {
+//   const userId  = req.params.userId;
+//   try{
+//     const reviews = await getReviewByUserId(userId);
+//     console.log('reviews sent in response: ', reviews);
+//     res.json({ reviews });
+//   } catch (error){
+//     next(error);
+//   }
+// });
+
+
+
 //DONT KNOW IF WE ACTUALLY NEED THAT OR IT IS GONNA WORK THRU THE FRONT END??
 reviewsRouter.post('/', requireUser, async (req, res, next) => {
   const {content = "", rating, movieId} = req.body;
