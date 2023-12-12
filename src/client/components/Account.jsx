@@ -9,14 +9,9 @@ function Account({ token }) {
 
   const { id } = useParams();
   useEffect(() =>{
-    
-    console.log('id:', id)
-    console.log('token:', token)
-  
-    console.log('id:', id)
     fetchAccount(token);
   
-    //fetchReviewedMovies();
+    fetchReviewedMovies();
   }, [token]);
 
   // async function fetchAccount(userId) {
@@ -45,7 +40,7 @@ function Account({ token }) {
         console.log('token:', token)
 
         try{ 
-          const response = await fetch (`${API}/users/${userId}`,
+          const response = await fetch (`${API}/users/me/${userId}`,
           {
           headers:{
             'Content-Type': 'application/json',
@@ -74,6 +69,7 @@ function Account({ token }) {
           },
         });
         const result = await response.json();
+        console.log("user reviews:", result)
         setReviewedMovies(result.reviews);
       } catch(error) {
         console.error(error.message);
@@ -112,11 +108,17 @@ function Account({ token }) {
     <>
         <div>
           {token ? (
-            <div>
-              <h2>My Account</h2>
-              {userData.name && <p>Name: {userData.name}</p>}
-              {userData.email && <p>Email: {userData.email}</p>}
-              <h3>Reviewed Movies:</h3>
+            <div className="account-container">
+              <div className="user-info">
+                <h2>{userData.name}</h2>
+                <p>{userData.email}</p>
+                <button>Edit Profile</button>
+              </div>
+              <div className="account-reviews">
+                <h3>Reviews</h3>
+                <hr />
+
+              </div>
               {/* Rest of the code */}
             </div>
             ) : (

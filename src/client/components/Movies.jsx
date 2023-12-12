@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { Link } from 'react-router-dom'
 import Axios from 'axios'
 
 let API = 'http://localhost:3000/api'
 
 
 function Movies() {
+ 
   const [searchMovie, setSearchMovie] = useState("");
+
   const [movies, setMovies] = useState([]);
   const navigate = useNavigate();
 
@@ -22,13 +25,18 @@ function Movies() {
 
   async function fetchMovies() {
     try {
+      //  fix this const data = movies make array obj of movies
+     
       const { data } = await Axios.get(`${API}/movies`);
       // console.log(data.movies)
       setMovies(data.movies);
 
     } catch (error) {
       console.error('Error fetching movies:', error.message);
+      
     }
+    
+    
   }
 
   const handleClick = (movieId) => {
@@ -47,9 +55,10 @@ function Movies() {
     );
   };
   
+
   return (
     <>
-      {/* <header className="site-header">
+       {/* <header className="site-header">
       <div id="backdrop" className="backdrop-wrapper -loaded" data-offset="15" style={{ backgroundImage: `url(${backdropImageUrl})` }}>
         <div className="header-content">
         </div>
@@ -63,8 +72,8 @@ function Movies() {
           <button>Sign In or Become a Rat</button>
         </div>
       </header> */}
-     
-  
+      
+
       <div className="app">
         <div className='popular'>
           <h3>POPULAR MOVIES</h3>

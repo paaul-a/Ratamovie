@@ -16,9 +16,6 @@ const createUser = async({ name='first last', email, password, role = 'user' }) 
         throw err;
     }
 }
-// const getAllUsers = async({}) => {
-
-//}
 
 const getUser = async({email, password}) => {
     if(!email || !password) {
@@ -54,26 +51,22 @@ const getUserByEmail = async(email) => {
     }
 }
 
-const getUserById = async(userId) => {
+async function getUserById(userId) {
     try {
-        const { rows: [ user ] } = await db.query(`
-            SELECT *
-            FROM users
-            WHERE id = $1
-            `, [userId]);
+        const { rows: [ user ]} = await db.query(`
+        SELECT *
+        FROM users
+        WHERE id = $1;
+        `, [userId])
 
-        if(!user) {
-            next({
-                name: "UserNotFoundError",
-                message: "A user with that id does not exist"
-            })
-        }
+        if(!user) return null;
+
         return user
-    } catch(error) {
-        throw error;
+    } catch(err) {
+        throw err
     }
-
 }
+
 const getAllUsers = async () => {
     try {
         const { rows: users } = await db.query(`
