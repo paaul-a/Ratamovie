@@ -170,7 +170,7 @@ const createReviewsTable = async () => {
           id SERIAL PRIMARY KEY,
           content TEXT NOT NULL,
           rating INTEGER CHECK (rating >= 1 AND rating <= 5),
-          name VARCHAR(255) DEFAULT 'name',
+          name VARCHAR(255) DEFAULT NULL,
           "movieId" INTEGER REFERENCES movies(id),
           "userId" INTEGER REFERENCES users(id)
       )`)

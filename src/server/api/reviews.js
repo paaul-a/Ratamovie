@@ -41,14 +41,14 @@ reviewsRouter.get('/:movieId/users/:userId', async (req, res, next) => {
 })
 //DONT KNOW IF WE ACTUALLY NEED THAT OR IT IS GONNA WORK THRU THE FRONT END??
 reviewsRouter.post('/', requireUser, async (req, res, next) => {
-  const {content = "", rating, name, movieId} = req.body;
+  const {content = "", rating, movieId} = req.body;
   const reviewData = {};
 
   try {
     
     reviewData.content = content;
     reviewData.rating = rating;
-    reviewData.name = name;
+    reviewData.name = req.user.name;
     reviewData.movieId = movieId;
     reviewData.userId = req.user.id;
     
