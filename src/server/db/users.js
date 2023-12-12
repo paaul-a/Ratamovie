@@ -2,14 +2,14 @@ const db = require('./client')
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
 
-const createUser = async({ name='first last', email, password }) => {
+const createUser = async({ name='first last', email, password, role = 'user' }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
         const { rows: [ user ] } = await db.query(`
         INSERT INTO users(name, email, password, role)
         VALUES($1, $2, $3, $4)
         ON CONFLICT (email) DO NOTHING
-        RETURNING *`, [name, email, hashedPassword, 'user']);
+        RETURNING *`, [name, email, hashedPassword, role]);
 
         return user;
     } catch (err) {
@@ -27,8 +27,9 @@ const getUser = async({email, password}) => {
         const hashedPassword = user.password;
         const passwordsMatch = await bcrypt.compare(password, hashedPassword);
         if(!passwordsMatch) return;
+        const {id, name, email, role } = user; //
         delete user.password;
-        return user;
+        return { id, name, email, role }; //user;
     } catch (err) {
         throw err;
     }
@@ -65,55 +66,7 @@ async function getUserById(userId) {
         throw err
     }
 }
-// const getUserById = async(userId, req) => {
-//     console.log('Entering getUserById function');  // Add this line
 
-//     try {
-//         console.log('Entering getUserById function. userId:', userId, 'req:', req);
-
-        // console.log('req.user:', req.user);
-
-        // if (typeof userId === 'string' && userId.toLowerCase() === 'me') {
-        //     userId = req.user.id;
-        // }
-
-        //console.log('userId before query:', userId);
-        // if (userId === 'me') {
-        //     userId = req.user.id;
-        //   }
-
-        // const { rows: [ user ] } = await db.query(`
-        //     SELECT *
-        //     FROM users
-        //     WHERE id = $1
-        //     `, [userId]
-        // );
-        //console.log('Database query result:', { rows: [user] });
-        
-        // console.log('After querying the database. user:', user);
-
-        // if (!user) {
-        //     console.error('User not found:', user);
-        //     throw {
-        //         name: "UserNotFoundError",
-        //         message: "A user with that id does not exist"
-        //     }
-//}
-
-        // if(!user) {
-        //     throw{
-        //         name: "UserNotFoundError",
-        //         message: "A user with that id does not exist"
-        //     }
-        // }
-//         console.log('User object:', user);
-
-//         return user
-//     } catch(error) {
-//         throw error;
-//     }
-
-// }
 const getAllUsers = async () => {
     try {
         const { rows: users } = await db.query(`
