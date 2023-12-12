@@ -30,9 +30,9 @@ const getUser = async({email, password}) => {
         const hashedPassword = user.password;
         const passwordsMatch = await bcrypt.compare(password, hashedPassword);
         if(!passwordsMatch) return;
-        const {id, name, email, role } = user; //
+        // const {id, name, email, role } = user; //
         delete user.password;
-        return { id, name, email, role }; //user;
+        return user; //{ id, name, email, role }; //user;
     } catch (err) {
         throw err;
     }
