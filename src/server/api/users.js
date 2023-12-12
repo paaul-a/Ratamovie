@@ -1,6 +1,7 @@
 const express = require('express')
-const usersRouter = express.Router();
 const { requireAdmin, requireUser } = require('./utils');
+const usersRouter = express.Router();
+
 
 const {
     createUser,
@@ -8,7 +9,6 @@ const {
     getUserByEmail,
     getAllUsers,
     getUserById
-
 } = require('../db');
 
 const jwt = require('jsonwebtoken')
@@ -45,33 +45,70 @@ try{ const userId = req.params.userId;
     }
 });
 
-usersRouter.get('/me', requireUser, async (req, res, next) => {
+usersRouter.get('/me/:userId', requireUser, async(req, res, next) => {
     try {
-        const userId = req.params.userId === 'me' ? req.user.id : req.params.userId;
-        console.log('userId in api:', userId)
-
-        const user = await getUserById(userId);
-
-        // const user = await getUserById(req.user.id);
-
-        if(!user) {
-            return res.status(404).json({error: 'user not found'})
-        }
-
-        const userData = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-        };
-        res.json(userData)
-
+        
+        console.log('me endpoint:', req.user)
+        res.send(req.user);
     } catch(err) {
-    console.error(err)
-    res.status(500).json({ error: 'Internal Server Error' });
-
+        next(err)
     }
-    
 })
+// usersRouter.get('/me', requireUser, async (req, res, next) => {
+//     try {
+//         const userId = req.params.userId;
+//         const user = await getUserById(userId);
+
+//         if (!user) {
+//             return res.status(404).json({ error: 'User not found' });
+//         }
+
+//         res.json(user);
+//     } catch (err) {
+//         next(err);
+//     }
+// });
+
+// usersRouter.get('/me', requireUser, async (req, res, next) => {
+//     console.log('Entering /users/me route handler');  // Add this line
+//     //console.log('Value of req before calling getUserById:', req);
+//     console.log('req.user before getUserById:', req.user);
+
+
+//     try {
+//         console.log('Decoded user in /users/me:', req.user);
+
+//         const userId = req.params.userId === 'me' ? req.user.id : req.params.userId;
+//         // console.log('userId in api:', userId)
+
+//         const user = await getUserById(req.user, req);
+
+//         // const user = await getUserById(req.user.id);
+
+//         if(!user) {
+//             return res.status(404).json({error: 'user not found'})
+//         }
+
+//         const userData = {
+//             id: user.id,
+//             name: user.name,
+//             email: user.email,
+//         };
+//         res.json(userData)
+
+//     } catch(err) {
+//         console.error(err);
+
+//         if (err.name === 'UserNotFoundError') {
+//           // Respond with a 404 status and an error message
+//           res.status(404).json({ error: 'User not found' });
+//         } else {
+//           // For other types of errors, respond with a 500 status and a generic error message
+//           res.status(500).json({ error: 'Internal Server Error' });
+//         }
+//       }
+    
+// })
 
 usersRouter.post('/login', async(req, res, next) => {
     const { email, password } = req.body;

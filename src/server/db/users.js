@@ -16,9 +16,6 @@ const createUser = async({ name='first last', email, password }) => {
         throw err;
     }
 }
-// const getAllUsers = async({}) => {
-
-//}
 
 const getUser = async({email, password}) => {
     if(!email || !password) {
@@ -53,27 +50,70 @@ const getUserByEmail = async(email) => {
     }
 }
 
-const getUserById = async(userId) => {
+async function getUserById(userId) {
     try {
-        const { rows: [ user ] } = await db.query(`
-            SELECT *
-            FROM users
-            WHERE id = $1
-            `, [userId]
-        );
+        const { rows: [ user ]} = await db.query(`
+        SELECT *
+        FROM users
+        WHERE id = $1;
+        `, [userId])
 
-        if(!user) {
-            next({
-                name: "UserNotFoundError",
-                message: "A user with that id does not exist"
-            })
-        }
+        if(!user) return null;
+
         return user
-    } catch(error) {
-        throw error;
+    } catch(err) {
+        throw err
     }
-
 }
+// const getUserById = async(userId, req) => {
+//     console.log('Entering getUserById function');  // Add this line
+
+//     try {
+//         console.log('Entering getUserById function. userId:', userId, 'req:', req);
+
+        // console.log('req.user:', req.user);
+
+        // if (typeof userId === 'string' && userId.toLowerCase() === 'me') {
+        //     userId = req.user.id;
+        // }
+
+        //console.log('userId before query:', userId);
+        // if (userId === 'me') {
+        //     userId = req.user.id;
+        //   }
+
+        // const { rows: [ user ] } = await db.query(`
+        //     SELECT *
+        //     FROM users
+        //     WHERE id = $1
+        //     `, [userId]
+        // );
+        //console.log('Database query result:', { rows: [user] });
+        
+        // console.log('After querying the database. user:', user);
+
+        // if (!user) {
+        //     console.error('User not found:', user);
+        //     throw {
+        //         name: "UserNotFoundError",
+        //         message: "A user with that id does not exist"
+        //     }
+//}
+
+        // if(!user) {
+        //     throw{
+        //         name: "UserNotFoundError",
+        //         message: "A user with that id does not exist"
+        //     }
+        // }
+//         console.log('User object:', user);
+
+//         return user
+//     } catch(error) {
+//         throw error;
+//     }
+
+// }
 const getAllUsers = async () => {
     try {
         const { rows: users } = await db.query(`

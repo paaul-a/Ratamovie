@@ -18,7 +18,7 @@ reviewsRouter.get('/:movieId', async (req, res, next) => {
   const movieId = req.params.movieId
 
   try {
-    const reviews = await getReviewByMovieId(movieId, userId);
+    const reviews = await getReviewByMovieId(movieId);
   
     res.json({
       reviews

@@ -13,15 +13,15 @@ apiRouter.use(async (req, res, next) => {
   const auth = req.header('Authorization');
   
   if (!auth) { 
-    next();
+    return next();
   } else if (auth.startsWith(prefix)) {
     // TODO - Get JUST the token out of 'auth'
     const token = auth.slice(prefix.length);
-    console.log('token:', token)
+    //console.log('token:', token)
 
     try {
       const parsedToken = jwt.verify(token, JWT_SECRET);
-      console.log('parsedToken:', parsedToken)
+      //console.log('parsedToken:', parsedToken)
       const id = parsedToken && parsedToken.id
       console.log('id:', id)
       if(id) {
@@ -42,6 +42,13 @@ apiRouter.use(async (req, res, next) => {
   }
 });
 
+apiRouter.use((req, res, next) => {
+  if(req.user) {
+    console.log("User is set:", req.user)
+  }
+  next();
+});
+
 const usersRouter = require('./users');
 apiRouter.use('/users', usersRouter);
 
@@ -56,6 +63,7 @@ apiRouter.use('/reviews', reviewsRouter)
 
 const commentsRouter = require('./comments');
 apiRouter.use('/comments', commentsRouter)
+
 apiRouter.use((err, req, res, next) => {
     res.status(500).send(err)
   }) //
