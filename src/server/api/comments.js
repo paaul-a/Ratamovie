@@ -1,6 +1,6 @@
 const express = require('express');
 const commentsRouter = express.Router();
-const { requireUser } = require('./utils');
+const { requireUser, requireAdmin } = require('./utils');
 
 const { 
   createComment,
@@ -9,7 +9,35 @@ const {
   deleteComment,
   editComment,
   getCommentsByUserId,
+  getAllComments
 } = require('../db/comments');
+
+
+commentsRouter.get('/me', requireUser, async (req, res, next) => {
+  try{
+    const userId = req.user.id;
+    const user = req.user
+    const comments = await getCommentsByUserId(userId);
+
+    const userWithComments = {
+      ...user,
+      comments: comments,
+    };
+    console.log('user deets w reviews: ', userWithComments)
+    res.json(userWithComments);
+  } catch (error){
+    next (error);
+  }
+});
+
+commentsRouter.get('/', requireAdmin, async (req, res, next) => {
+  try{
+    const comments = await getAllComments();
+    res.json({ comments });
+  }catch(error){
+    next(error);
+  }
+});
 
 commentsRouter.get('/:reviewId', async (req, res, next) => {
   const reviewId  = req.params.reviewId;
@@ -48,16 +76,6 @@ commentsRouter.post('/', requireUser, async (req, res, next) =>{
     next({name, message});
   }
 })
-//NEED A GET COMMENT BY ID?????
-commentsRouter.get('/user/:userId', async (req, res, next) => {
-  try{
-    const { userId } = req.params;
-    const comments = await getCommentsByUserId(userId);
-    res.send(comments);
-  } catch (error){
-    next (error);
-  }
-});
 
 commentsRouter.patch('/:commentId', requireUser, async (req, res, next) =>{
   const { commentId } = req.params;

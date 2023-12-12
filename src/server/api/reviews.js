@@ -11,7 +11,8 @@ const {
   getReviewById,
   deleteReview,
   getReviewByUserId,
-  editReview
+  editReview,
+  getAllReviews
 } = require('../db/reviews');
 
 reviewsRouter.get('/me', requireUser, async (req, res, next) => {
@@ -26,8 +27,19 @@ reviewsRouter.get('/me', requireUser, async (req, res, next) => {
       reviews: reviews,
     };
 
+  
+
     console.log('User details with reviews:', userWithReviews);
     res.json(userWithReviews);
+} catch(err) {
+  next(err);
+}});
+
+
+reviewsRouter.get('/', requireAdmin, async(req, res, next) => {
+  try{
+    const reviews = await getAllReviews();
+    res.json({ reviews });
   } catch (error){
     next(error);
   }
@@ -57,18 +69,7 @@ reviewsRouter.get('/:movieId/users/:userId', async (req, res, next) => {
   } catch(err) {
     next(err)
   }
-})
-
-// reviewsRouter.get('/me/:userId', async (req, res, next) => {
-//   const userId  = req.params.userId;
-//   try{
-//     const reviews = await getReviewByUserId(userId);
-//     console.log('reviews sent in response: ', reviews);
-//     res.json({ reviews });
-//   } catch (error){
-//     next(error);
-//   }
-// });
+});
 
 
 
