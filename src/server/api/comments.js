@@ -23,11 +23,41 @@ commentsRouter.get('/me', requireUser, async (req, res, next) => {
       ...user,
       comments: comments,
     };
-    console.log('user deets w reviews: ', userWithComments)
+    console.log('user deets w comments: ', userWithComments)
     res.json(userWithComments);
   } catch (error){
     next (error);
   }
+});
+
+commentsRouter.delete('/admin/:commentId', requireAdmin, async (req, res, next) =>{
+  try {
+  const { commentId } = req.params;
+  const commentToUpdate = await getCommentById(commentId);
+
+  if (!commentToUpdate){
+    return next({
+      name: 'Comment not found.',
+      message: 'sorry, that comment was not found.'
+    });
+  }
+  else{
+
+    const deletedComment = await deleteComment(commentId);
+    res.status(204).send({ success: true, deletedComment });
+  }
+
+  // if (req.user.id !== commentToUpdate.userId){
+  //   return res.status(403).send({
+  //     success: false, 
+  //     message: 'Sorry. That comment does not belong to you!'
+  //   });
+  // }
+
+
+} catch ({ name, message}){
+  next ({ name, message });
+}
 });
 
 commentsRouter.get('/', requireAdmin, async (req, res, next) => {
@@ -128,5 +158,6 @@ commentsRouter.delete('/:commentId', requireUser, async (req, res, next) =>{
   next ({ name, message });
 }
 });
+
 
 module.exports = commentsRouter;
