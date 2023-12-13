@@ -25,12 +25,14 @@
 .site-header .welcome-button {
   background-color: #BF6B21;
   color: #fff;
-  padding: 8px 16px;
-  width: 95%;
+  padding: 15px 16px;
+  width: 50%;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 17px;
+  font-weight: bold;
 
   &:hover {
     background-color: #a85710; /* Darker shade for hover effect */
@@ -45,24 +47,7 @@
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: flex-start;
-  margin-top: -15px;
-}
-
-.popular {
-  color: #fff;
-  padding: 10px;
-  margin-top: -20px;
-  padding-left: 50px;
-  color: #99b7ccb0;
-
-
-}
-
-.popular hr {
-  margin-top: -15px;
-  margin-right: 35px;
-  border-top: 0.2px solid rgba(214, 222, 227, 0.181); /* Adjust thickness and color */
-
+  margin-top: -5px;
 }
 
 .movie-card {
@@ -89,13 +74,59 @@
   font-size: 16px;
 }
 
-.search-bar {
-  margin: 16px;
-  padding: 8px;
-  width: 100%;
-  box-sizing: border-box;
+.popular-container {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  padding: 10px;
+  margin-top: -20px;
+  padding-left: 50px;
+  color: #99b7ccb0;
 }
 
+.popular-hr {
+  margin-top: -20px;
+  border-top: 0.2px solid rgba(214, 222, 227, 0.181);
+  margin-right: 50px; /* Adjust this value for the right side */
+  margin-left: 50px;
+  /* margin-right: 35px; */
+
+}
+
+.search-bar {
+  margin-left: auto;
+  margin-right: 33px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar-input {
+  padding: 8px;
+  border: none;
+  border-radius: 20px;
+  margin-right: 8px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.search-bar-input::placeholder {
+  color: #ffffff;
+}
+
+.search-bar-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #bf6b21;
+  color: #ffffffda;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #a85710;
+  }
+}
 
 
 /* Add more styling for other elements if needed */
@@ -129,7 +160,7 @@ body {
 }
 
 .navbar {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -146,60 +177,30 @@ body {
 .navbar a {
   color: #fff;
   text-decoration: none;
-  margin: 0 15px;
   font-size: 1.2em;
+  transition: color 0.3s ease;
+  padding-right: 15px; /* Add right padding to the nav-links */
 }
 
-
 .navbar .nav-link {
+
+  margin-right: 15px;
+  font-size: large;
+  font-weight: bold;
   margin-right: 35px;
   font-size: medium;
   transition: color 0.3s ease;
   &:hover{
-    color: #acabab; /* Darker shade for hover effect */
+    color: #acabab; 
   }
 }
 
 .navbar .site-name {
   margin-left: 0;
   margin-right: auto;
-  font-size: 1.5em;
+  color: #fff;
+  font-size: 2em;
   font-weight: bold;
-}
-
-.navbar .search-bar {
-  /* display: flex;
-  align-items: center;  */
-  margin-left: 40%;
-  color: white;
-}
-
-.navbar input[type="text"] {
-  padding: 8px;
-  border: none;
-  border-radius: 20px;
-  margin-right: 8px; 
-  color: white;
-  background-color: rgba(255, 255, 255, 0.3); /* Adjust the last value (0.3) for transparency */
-}
-
-.navbar input[type="text"]::placeholder {
-  color: #ffffff; 
-}
-
-
-.navbar button {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  background-color: #BF6B21;
-  color: #ffffffda;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #a85710; /* Darker shade for hover effect */
-  }
 }
 
 .scrolled {
@@ -207,8 +208,13 @@ body {
 }
 
 
-/* ========================================================= */
+/* ==========================
+    SINGLE MOVIE STYLING
+=========================== */
 
+.details {
+  margin-top: 100px;
+}
 .singleMovie {
   max-width: 800px;
   margin: 0 auto;
@@ -288,7 +294,7 @@ body {
   margin-top: 10px;
 }
 
-.user-review {
+/* .user-review {
   color:#fff;
   border: 1px solid #6c8da3;
   background-color: #6c8da3;
@@ -315,6 +321,165 @@ body {
   border-radius: 10px;
   
 }
+
+.movie-reviews {
+  margin-top: 20px;
+}
+
+Styling for the "REVIEWS" heading
+.movie-reviews h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+Styling for each individual review
+.reviews {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+Styling for the reviewer's name in a review
+.reviews p {
+  margin: 5px 0;
+}
+
+Styling for the delete review button
+.reviews button {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.reviews button:hover {
+  background-color: #c0392b;
+}
+
+Styling for the comment button and the comment form
+.reviews button + button,
+.comment-form {
+  margin-top: 10px;
+}
+
+.delete-review-icon {
+  color: #e74c3c;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.delete-review-icon:hover {
+  color: #c0392b;
+}
+
+.comment-form input {
+  padding: 8px;
+  margin-right: 5px;
+}
+
+.comment-form button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comment-form button:hover {
+  background-color: #2980b9;
+} */
+/* Existing styling for user review */
+.user-review {
+  color: #fff;
+  border: 1px solid #6c8da3;
+  background-color: #6c8da3;
+  box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-right: 70px;
+  padding-bottom: 10px;
+}
+.user-review p {
+  margin-left: 8px;
+}
+
+.user-review .star-rating {
+  font-size: 20px;
+}
+.user-review h5 {
+  margin-left: 8px;
+  margin-bottom: -5px;
+}
+
+.user-review hr {
+  margin: 8px;
+  border-radius: 10px;
+}
+
+/* Styling for the movie reviews container */
+.movie-reviews {
+  margin-top: 20px;
+}
+
+/* Styling for the review container */
+.review-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Styling for the delete review icon */
+.delete-review-icon {
+  color: #727272;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.delete-review-icon:hover {
+  color: #3f3f3f;
+}
+
+/* Styling for the add comment button */
+.add-comment {
+  margin-top: 10px;
+  background-color: #dd7d28;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-comment:hover {
+  background-color: #df6c07;
+}
+
+/* Styling for the comment form */
+.comment-form {
+  margin-top: 10px;
+}
+
+.comment-form input {
+  padding: 8px;
+  margin-right: 5px;
+}
+
+.comment-form button {
+  background-color: #dd7d28;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comment-form button:hover {
+  background-color: #df6c07;
+}
+
 
 .review-form {
   display: flex;
@@ -344,6 +509,31 @@ body {
   &:hover {
     background-color: #a85710; /* Darker shade for hover effect */
   }
+}
+
+.login-request {
+  padding: 10px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.login-request p {
+  margin-bottom: 10px;
+}
+
+.login-link-button {
+  background-color: #dd7d28;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.login-link-button:hover {
+  background-color: #df6c07;
 }
 
 /* 

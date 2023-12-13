@@ -29,13 +29,7 @@ function App() {
 
   return (
   <> 
-   <div className="site-header">
-      <div className='welcome'>
-        <h1>Welcome to RataMovie! A place to review and rate your favorite movies</h1>
-         
-        <button className="welcome-button">Sign In or Become a Rat</button>
-      </div>
-      
+   <div className="App">
         <nav className="navbar">
           <div className="site-name">RataMovie</div>
           <Link className="nav-link" to="/movies">
@@ -44,6 +38,14 @@ function App() {
           <Link className="nav-link" to="/login">
             Login
           </Link>
+
+          {token ? (
+            <Link className="nav-link" to={`/users/${userId}`}>
+              User
+            </Link>
+          ) : null}
+           
+
           <Link className="nav-link" to={`/users/${userId}`}>
             User
           </Link>
@@ -56,6 +58,7 @@ function App() {
               />
               <button onClick={handleSearch}>Search</button>
             </div> */}
+
         </nav>
     </div>
 
@@ -67,9 +70,26 @@ function App() {
       <Route path="/users/:userId" element={<Account userId={userId} setUserId={setUserId} token={token} setToken={setToken} myReviews={myReviews}/>}/>
     </Routes>
     </>
+
+
+    
   );
   
 }
+ {/* <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search movies..."
+                value={searchMovie}
+                onChange={handleInputChange}
+              />
+              <button onClick={handleSearch}>Search</button>
+            </div> */}
+
+  );
+  
+}
+
 
 
 export default App;

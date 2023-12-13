@@ -2,9 +2,11 @@ const express = require('express');
 const moviesRouter = express.Router();
 
 
-const { getAllMovies, 
+const { 
+  getAllMovies, 
   getMovieById
 } = require('../db/movies');
+
 const { requireAdmin } = require('./utils');
 
 moviesRouter.get('/', async (req, res, next) => {

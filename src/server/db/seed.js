@@ -3,6 +3,7 @@ const { createUser } = require('./users')
 const { createComment } = require('./comments')
 const { createReview } = require('./reviews')
 const { createMovie } = require('./movies')
+const { createMovieReview } = require('./reviews')
 
 const dataObjects = require('./data.json')
 
@@ -82,7 +83,30 @@ const reviews = [
   // Add more dummy reviews if needed
 ];
 
+const movieReviewData = [
+  {
+    movieId: 1,
+    reviewId: 1,
+    userId: 1,
+  }
+];
+
 const comments = [
+  {
+    content: "I agree, great movie!",
+    reviewId: 1,
+    userId: 2,
+  },
+  {
+    content: "I agree, great movie!",
+    reviewId: 2,
+    userId: 1,
+  },
+  {
+    content: "I agree, great movie!",
+    reviewId: 3,
+    userId: 1,
+  },
   {
     content: "I agree, great movie!",
     reviewId: 1,
@@ -112,6 +136,7 @@ const dropTables = async () => {
     // Order of dropping tables is the opposite of creating them.  This avoids errors in deleting
     await db.query(`
         DROP TABLE IF EXISTS comments;
+        DROP TABLE IF EXISTS movie_reviews;
         DROP TABLE IF EXISTS reviews;
         DROP TABLE IF EXISTS movies;
         DROP TABLE IF EXISTS users;
@@ -130,6 +155,7 @@ const createTables = async () => {
   await createMoviesTable()
   await createReviewsTable()
   await createCommentsTable()
+  await createMovieReviewsTable()
 }
 
 const createUsersTable = async () => {
@@ -194,6 +220,19 @@ const createCommentsTable = async () => {
   }
 }
 
+const createMovieReviewsTable = async () => {
+  try {
+    await db.query(`
+      CREATE TABLE movie_reviews (
+        id SERIAL PRIMARY KEY,
+        "movieId" INTEGER REFERENCES movies(id),
+        "reviewId" INTEGER REFERENCES reviews(id),
+        "userId" INTEGER REFERENCES users(id)
+      )`);
+  } catch (err) {
+    throw err;
+  }
+};
 /*----------------------
   Inserting Values
 ------------------------*/
@@ -243,6 +282,19 @@ const insertReviews = async () => {
   }
 }
 
+const insertMovieReviews = async () => {
+  try {
+
+    for(const movieReview of movieReviewData) {
+      await createMovieReview(movieReview)
+    }
+
+    console.log('Movie Reviews Data Successfully Seeded.');
+  } catch (error) {
+    console.error('Error inserting seed data:', error);
+  }
+}
+
 const insertComments = async () => {
   try {
     for (const comment of comments) {
@@ -259,6 +311,8 @@ const insertComments = async () => {
   }
 }
 
+
+
 /*----------------------
   Running Functions in order
 ------------------------*/
@@ -271,6 +325,7 @@ const seedDatabse = async () => {
     await insertMovies()
     await insertReviews()
     await insertComments()
+    await insertMovieReviews()
   } catch (err) {
     throw err
   } finally {
