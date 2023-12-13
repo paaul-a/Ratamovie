@@ -76,13 +76,13 @@ function Movies() {
         </div>
         <div className='movies-container'>
       
-          {/* <input 
+          <input 
             className="search-bar"
             type="text"
             placeholder="Search by movie title or director..."
             value={searchMovie}
             onChange={handleInputChange}
-          /> */}
+          />
           {
             movies.length ? (
               filterMovie().map((movie) => {

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Register from './Register';
-
+import { useNavigate } from 'react-router-dom'
 
 
 const Login = ({setToken, setUserId}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -50,6 +51,7 @@ const Login = ({setToken, setUserId}) => {
         if(!response.ok) {
           throw(result)
         }
+        navigate(`/users/me`)
         setEmail('');
         setPassword('');
 

@@ -71,9 +71,6 @@ reviewsRouter.get('/:movieId/users/:userId', async (req, res, next) => {
   }
 });
 
-
-
-//DONT KNOW IF WE ACTUALLY NEED THAT OR IT IS GONNA WORK THRU THE FRONT END??
 reviewsRouter.post('/', requireUser, async (req, res, next) => {
   const {content = "", rating, movieId} = req.body;
   const reviewData = {};
@@ -132,6 +129,7 @@ reviewsRouter.delete('/:reviewId', requireUser, async (req, res, next) => {
   }
 });
 
+//no essential for our site, admin shouldnt be able to change a users review rather just delete it if they dont like it/doesnt align w values of company or whatever
 reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
   const { reviewId } = req.params;
   console.log('updating review w ID', reviewId);
@@ -161,7 +159,7 @@ reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
 
 
 //ADMIN ROUTES FOR EDIT AND DELETE BELOW
-reviewsRouter.delete('admin/:reviewId', requireAdmin, async (req, res, next) => {
+reviewsRouter.delete('/admin/:reviewId', requireAdmin, async (req, res, next) => {
   try {
     const { reviewId } = req.params;
     console.log('deleting review with ID', reviewId)
