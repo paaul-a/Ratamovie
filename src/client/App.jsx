@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navigate from './components/Navigate';
 import { Link, Routes, Route, useNavigate, useParams } from "react-router-dom";
 import Login from './components/Login';
@@ -6,6 +6,7 @@ import Movies from './components/Movies';
 import SingleMovie from './components/SingleMovie';
 import Register from './components/Register';
 import Account from './components/Account';
+import Admin from './components/Admin';
 
 
 function App() {
@@ -13,19 +14,20 @@ function App() {
   const [myReviews, setMyReviews] = useState([]);
   const [searchMovie, setSearchMovie] = useState('');
   const [userId, setUserId] = useState(null);
+  // const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   const {id} = useParams();
 
-
+  // useEffect(() =>{
+  //   const roleFromToken = token ? token.role : null;
+  //   setUserId(token ? token.userId : null);
+  //   setUserRole(roleFromToken);
+  // }, [token]);
   // // const handleInputChange = (e) => {
   // //   setSearchMovie(e.target.value);
   // // };
 
-  // // const handleSearch = () => {
-  // //   // Navigate to the Movies page with the search query
-  // //   navigate(`/movies?search=${encodeURIComponent(searchMovie)}`);
-  // };
 
   return (
   <> 
@@ -44,20 +46,12 @@ function App() {
               User
             </Link>
           ) : null}
-           
-
-          {/* <Link className="nav-link" to={`/users/${userId}`}>
-            User
-          </Link> */}
-            {/* <div className="search-bar">
-              <input
-                type="text"
-                placeholder="Search movies..."
-                value={searchMovie}
-                onChange={handleInputChange}
-              />
-              <button onClick={handleSearch}>Search</button>
-            </div> */}
+          
+          {token ? (
+            <Link className="nav-link" to={`/admin`}>
+              Admin
+            </Link>
+          ) : null}
 
         </nav>
     </div>
@@ -68,6 +62,7 @@ function App() {
       <Route path="/login" element={<Login userId={userId} setUserId={setUserId} token={token} setToken={setToken}/>}/>
       <Route path="/register" element={<Register token={token} setToken={setToken}/>}/>
       <Route path="/users/:userId" element={<Account userId={userId} setUserId={setUserId} token={token} setToken={setToken} myReviews={myReviews}/>}/>
+      <Route path="/admin" element={<Admin token={token} setToken={setToken}/>}/>
     </Routes>
     </>
 
