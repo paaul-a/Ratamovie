@@ -19,7 +19,7 @@ const createMovieReview = async ({ movieId, reviewId, userId }) => {
     RETURNING *
     `, [movieId, reviewId, userId]);
 
-    console.log(`Movie Review inserted successfully: movieId=${movieId}, reviewId=${reviewId}, userId=${userId}`);
+    // console.log(`Movie Review inserted successfully: movieId=${movieId}, reviewId=${reviewId}, userId=${userId}`);
 
     return movieReview;
   } catch(err) {
@@ -35,7 +35,7 @@ async function getReviewByUserId(userId){
     FROM reviews
     WHERE "userId" = $1
     `, [userId]);
-    console.log('retrieved reviews:', reviews);
+    // console.log('retrieved reviews:', reviews);
     return reviews;
   } catch (error) {
     throw error;
@@ -50,7 +50,7 @@ async function getMovieReviewsByUserId(userId) {
       WHERE "userId" = $1;
     `, [userId]);
 
-    console.log('Retrieved movie reviews:', movieReviews);
+    // console.log('Retrieved movie reviews:', movieReviews);
     return movieReviews;
   } catch (error) {
     throw error;

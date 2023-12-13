@@ -50,7 +50,7 @@ function Account({ token }) {
         });
         const result = await response.json();
       
-        console.log("user reviews:", result)
+        //console.log("user reviews:", result)
         setUserData(result)
         setReviewedMovies(result.reviews);
       } catch(error) {
@@ -62,7 +62,7 @@ function Account({ token }) {
   async function fetchMovieDetails() {
     try {
       const { data } = await axios.get(`${API}/movies/${id}`);
-      console.log("movie details in account:", data);
+      //console.log("movie details in account:", data);
       return data
       //setMovieDetails(data);
     } catch (err) {

@@ -25,7 +25,7 @@ function Register({ setToken }) {
       })
 
       const result = await response.json()
-      console.log('set token:', result.token)
+      //console.log('set token:', result.token)
       setToken(result.token)
       setName("");
       // setFirstName("");

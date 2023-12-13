@@ -12,7 +12,7 @@ const { requireAdmin } = require('./utils');
 moviesRouter.get('/', async (req, res, next) => {
   try {
     const movies = await getAllMovies();
-    console.log('Movies:', movies);
+    //console.log('Movies:', movies);
     res.send({movies});
 
   } catch (error) {

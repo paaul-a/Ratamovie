@@ -40,9 +40,9 @@
 //     return next(error);
 //   }
 function requireUser(req, res, next) {
-  console.log('requireUser middleware triggered');
-  console.log('Authorization header:', req.headers.authorization);
-  console.log('Decoded token:', req.user); 
+  // console.log('requireUser middleware triggered');
+  // console.log('Authorization header:', req.headers.authorization);
+  // console.log('Decoded token:', req.user); 
   if (!req.user) {
     console.log('User is missing');
     res.status(401);

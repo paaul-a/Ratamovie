@@ -46,9 +46,9 @@ function App() {
           ) : null}
            
 
-          <Link className="nav-link" to={`/users/${userId}`}>
+          {/* <Link className="nav-link" to={`/users/${userId}`}>
             User
-          </Link>
+          </Link> */}
             {/* <div className="search-bar">
               <input
                 type="text"
@@ -64,7 +64,7 @@ function App() {
 
     <Routes> 
       <Route path="/movies" element={<Movies/>}/>
-      <Route path='/movies/:id' element={<SingleMovie token={token} setMyReviews={setMyReviews}/>} />
+      <Route path='/movies/:id' element={<SingleMovie token={token} userId={userId} setUserId={setUserId} setMyReviews={setMyReviews}/>} />
       <Route path="/login" element={<Login userId={userId} setUserId={setUserId} token={token} setToken={setToken}/>}/>
       <Route path="/register" element={<Register token={token} setToken={setToken}/>}/>
       <Route path="/users/:userId" element={<Account userId={userId} setUserId={setUserId} token={token} setToken={setToken} myReviews={myReviews}/>}/>

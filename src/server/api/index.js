@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const { getUserById } = require('../db')
 
-const volleyball = require('volleyball')
-apiRouter.use(volleyball)
+//const volleyball = require('volleyball')
+//apiRouter.use(volleyball)
 
 // TO BE COMPLETED - set `req.user` if possible, using token sent in the request header
 apiRouter.use(async (req, res, next) => {
@@ -23,7 +23,7 @@ apiRouter.use(async (req, res, next) => {
       const parsedToken = jwt.verify(token, JWT_SECRET);
       //console.log('parsedToken:', parsedToken)
       const id = parsedToken && parsedToken.id
-      console.log('id:', id)
+      //console.log('id:', id)
       if(id) {
         req.user = await getUserById(id);
         next()

@@ -19,7 +19,7 @@ async function getAllMovies() {
       SELECT * 
       FROM movies
     `);
-    console.log(result.rows)
+    // console.log(result.rows)
     return result.rows;
 
   } catch (err) {

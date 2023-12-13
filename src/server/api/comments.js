@@ -23,7 +23,7 @@ commentsRouter.get('/me', requireUser, async (req, res, next) => {
       ...user,
       comments: comments,
     };
-    console.log('user deets w comments: ', userWithComments)
+    //console.log('user deets w comments: ', userWithComments)
     res.json(userWithComments);
   } catch (error){
     next (error);
@@ -72,10 +72,10 @@ commentsRouter.get('/', requireAdmin, async (req, res, next) => {
 commentsRouter.get('/:reviewId', async (req, res, next) => {
   const reviewId  = req.params.reviewId;
   try{
-    console.log('Fetching comments for review ID: ', reviewId);
+    //console.log('Fetching comments for review ID: ', reviewId);
 
     const comments = await getCommentsByReviewId(reviewId);
-    console.log('fetched comments:', comments)
+    //console.log('fetched comments:', comments)
 
     res.send(comments);
   } catch (error){
@@ -85,14 +85,19 @@ commentsRouter.get('/:reviewId', async (req, res, next) => {
 })
 
 commentsRouter.post('/', requireUser, async (req, res, next) =>{
-  const { content = "", reviewId } = req.body;
+  const { content = "", reviewId, userId } = req.body;
   const commentData = {}
   try{
     commentData.content = content;
     commentData.reviewId = reviewId;
-    commentData.userId = req.user.id;
+    commentData.userId = userId;
+    //console.log(content)
+    //console.log(reviewId)
+    //console.log(userId)
 
     const comment = await createComment(commentData);
+    //console.log("comment in api route:", comment)
+
     if(comment) {
       res.send(comment);
     } else {

@@ -17,7 +17,7 @@ const {
 } = require('../db/reviews');
 
 reviewsRouter.get('/me', requireUser, async (req, res, next) => {
-  console.log('req.user:', req.user);
+  //console.log('req.user:', req.user);
   try{
     const userId  = req.user.id;
     const user = req.user;
@@ -28,7 +28,7 @@ reviewsRouter.get('/me', requireUser, async (req, res, next) => {
       reviews: reviews,
     };
 
-    console.log('User details with reviews:', userWithReviews);
+    //console.log('User details with reviews:', userWithReviews);
     res.json(userWithReviews);
   } catch(err) {
     next(err);
@@ -85,7 +85,7 @@ reviewsRouter.post('/', requireUser, async (req, res, next) => {
     reviewData.userId = req.user.id;
     
     const review = await createReview(reviewData);
-    console.log("review data:", reviewData)
+    //console.log("review data:", reviewData)
     
     if(review) {
       res.send(review);
@@ -104,7 +104,7 @@ reviewsRouter.post('/', requireUser, async (req, res, next) => {
 reviewsRouter.delete('/:reviewId', requireUser, async (req, res, next) => {
   try {
     const { reviewId } = req.params;
-    console.log('deleting review with ID', reviewId)
+    //console.log('deleting review with ID', reviewId)
 
     const reviewToUpdate = await getReviewById(reviewId);
 
@@ -130,11 +130,11 @@ reviewsRouter.delete('/:reviewId', requireUser, async (req, res, next) => {
   }
 });
 
-//no essential for our site, admin shouldnt be able to change a users review rather just delete it if they dont like it/doesnt align w values of company or whatever
-reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
+reviewsRouter.put('/:reviewId', requireUser, async (req, res, next) =>{
   const { reviewId } = req.params;
-  console.log('updating review w ID', reviewId);
+  //console.log('updating review w ID', reviewId);
   const { updatedReview } = req.body;
+  console.log("updated review", reviewId);
   try{
     const reviewToUpdate = await getReviewById(reviewId);
     
@@ -154,7 +154,8 @@ reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
     res.status(200).json({ message: 'Content succesfull updated' });
   } catch (error) {
     console.error( 'Error updating Review: ', error);
-    res.status(500).json({ error: 'Internal Server Error'});
+    // res.status(500).json({ error: 'Internal Server Error'});
+    next(error);
   }
 });
 
@@ -163,7 +164,7 @@ reviewsRouter.patch('/:reviewId', requireUser, async (req, res, next) =>{
 reviewsRouter.delete('/admin/:reviewId', requireAdmin, async (req, res, next) => {
   try {
     const { reviewId } = req.params;
-    console.log('deleting review with ID', reviewId)
+    //console.log('deleting review with ID', reviewId)
 
     const reviewToUpdate = await getReviewById(reviewId);
 
@@ -183,9 +184,10 @@ reviewsRouter.delete('/admin/:reviewId', requireAdmin, async (req, res, next) =>
   }
 });
 
+//no essential for our site, admin shouldnt be able to change a users review rather just delete it if they dont like it/doesnt align w values of company or whatever
 reviewsRouter.patch('/admin/:reviewId', requireAdmin, async (req, res, next) =>{
   const { reviewId } = req.params;
-  console.log('updating review w ID', reviewId);
+  //console.log('updating review w ID', reviewId);
   const { updatedReview } = req.body;
   try{
     const reviewToUpdate = await getReviewById(reviewId);

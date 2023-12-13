@@ -15,7 +15,7 @@ const jwt = require('jsonwebtoken')
 
 usersRouter.get('/', requireAdmin, async( req, res, next) => {
     try {
-        console.log('user info from token:', req.user);
+        //console.log('user info from token:', req.user);
         const users = await getAllUsers();
 
         res.send({
@@ -29,7 +29,7 @@ usersRouter.get('/', requireAdmin, async( req, res, next) => {
 usersRouter.get('/me/:userId', requireUser, async(req, res, next) => {
     try {
         
-        console.log('me endpoint:', req.user)
+        //console.log('me endpoint:', req.user)
         res.send(req.user);
     } catch(err) {
         next(err)
@@ -131,7 +131,8 @@ usersRouter.post('/login', async(req, res, next) => {
 
             res.send({
                 message: 'Login successful!',
-                token
+                token,
+                id: user.id
             });
         }
         else {

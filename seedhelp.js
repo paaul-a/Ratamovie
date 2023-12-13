@@ -28,7 +28,7 @@ function parseDataRow(row) {
     return obj;
   }
   const dataObjects = tsvLines.map(parseDataRow);
-  console.log(dataObjects)
+  //console.log(dataObjects)
   const jsString = JSON.stringify(dataObjects, null, 2);
 fs.writeFileSync('dataArr.js', jsString, 'utf8');
 module.exports = {dataObjects}

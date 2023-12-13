@@ -30,8 +30,8 @@ const Login = ({setToken, setUserId}) => {
             })
         });
         const result = await response.json();
-        console.log('login result:', result)
-        console.log('token result:', result.token)
+        //console.log('login result:', result)
+       // console.log('token result:', result.token)
         // console.log('id result:', result.id)
 
         // console.log('userId:', result.user?.id);
@@ -54,6 +54,7 @@ const Login = ({setToken, setUserId}) => {
         navigate(`/users/me`)
         setEmail('');
         setPassword('');
+        setUserId(result.id);
 
     } catch (err) {
         console.error(`${err.name}: ${err.message}`);
