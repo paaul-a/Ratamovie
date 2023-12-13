@@ -1,3 +1,4 @@
+const moviesRouter = require('../api/movies');
 const db = require('./client')
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
@@ -17,6 +18,8 @@ const createUser = async({ name='first last', email, password, role = 'user' }) 
     }
 }
 
+
+
 const getUser = async({email, password}) => {
     if(!email || !password) {
         return;
@@ -34,6 +37,8 @@ const getUser = async({email, password}) => {
         throw err;
     }
 }
+
+
 
 const getUserByEmail = async(email) => {
     try {

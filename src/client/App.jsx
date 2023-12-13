@@ -29,13 +29,7 @@ function App() {
 
   return (
   <> 
-   <div className="site-header">
-      <div className='welcome'>
-        <h1>Welcome to RataMovie! A place to review and rate your favorite movies</h1>
-         
-        <button className="welcome-button">Sign In or Become a Rat</button>
-      </div>
-      
+   <div className="App">
         <nav className="navbar">
           <div className="site-name">RataMovie</div>
           <Link className="nav-link" to="/movies">
@@ -44,18 +38,12 @@ function App() {
           <Link className="nav-link" to="/login">
             Login
           </Link>
-          <Link className="nav-link" to={`/users/${userId}`}>
-            User
-          </Link>
-            <div className="search-bar">
-              <input
-                type="text"
-                placeholder="Search movies..."
-                value={searchMovie}
-                onChange={handleInputChange}
-              />
-              <button onClick={handleSearch}>Search</button>
-            </div>
+          {token ? (
+            <Link className="nav-link" to={`/users/${userId}`}>
+              User
+            </Link>
+          ) : null}
+           
         </nav>
     </div>
 
@@ -67,46 +55,19 @@ function App() {
       <Route path="/users/:userId" element={<Account userId={userId} setUserId={setUserId} token={token} setToken={setToken} myReviews={myReviews}/>}/>
     </Routes>
     </>
+
+    
   );
   
 }
-
-// function App() {
-//   const [count, setCount] = useState(0);
-//   const [ token, setToken ] = useState(null);
-
-//   return (
-//   <> 
-//     <Navigate/>
-//    <div className="site-header">
-//         <nav className="navbar">
-//           <div className="site-name">RataMovie</div>
-//           <Link className="nav-link" to="/movies">
-//             Movies
-//           </Link>
-//           <Link className="nav-link" to="/login">
-//             Login/Signup
-//           </Link>
-//           <Link className="nav-link" to="/account">
-//             User Name
-//           </Link>
-//         </nav>
-//     </div>
-
-//     <Routes> 
-//       <Route path="/movies" element={<Movies/>}/>
-//       <Route path='/movies/:id' element={<SingleMovie/>} />
-//       <Route path="/login" element={<Login/>}/>
-//     </Routes>
-
-//     <Routes>
-//       <Route path="/register" element={<Register token={token} setToken={setToken}/>}/>
-//     </Routes>
-    
-   
-//     </>
-//   );
-  
-// }
+ {/* <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search movies..."
+                value={searchMovie}
+                onChange={handleInputChange}
+              />
+              <button onClick={handleSearch}>Search</button>
+            </div> */}
 
 export default App;

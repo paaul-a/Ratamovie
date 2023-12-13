@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
-import axios from "axios";
-
-
 
 // eslint-disable-next-line react/prop-types
 function Account({ token }) {
@@ -14,7 +11,6 @@ function Account({ token }) {
   const { id } = useParams();
   useEffect(() =>{
     fetchAccount(id);
-    fetchMovieDetails();
   
     //fetchReviewedMovies();
   }, [id]);
@@ -63,7 +59,7 @@ function Account({ token }) {
     }
   }
 
-  async function fetchMovieDetails(id) {
+  async function fetchMovieDetails() {
     try {
       const { data } = await axios.get(`${API}/movies/${id}`);
       console.log("movie details in account:", data);
@@ -73,16 +69,6 @@ function Account({ token }) {
       console.error("Error fetching movie details:", err.message);
     }
   }
-
-  // async function fetchMovieDetails(movieId) {
-  //   try {
-  //     const response = await fetch(`${API}/movies/${movieId}`);
-  //     const result = await response.json();
-  //     return result;
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // }
 
   async function handleEditProfile() {
     try{
@@ -124,26 +110,23 @@ function Account({ token }) {
             <div className="account-reviews">
               <h3>Reviews</h3>
               <hr />
-              {reviewedMovies.map(async (review) => {
-                const movieDetails = await fetchMovieDetails(review.movieId);
-                return (
-                  <div key={review.id}>
-                    <p>Movie Title: {movieDetails.title}</p>
-                    <p>Movie Image: <img src={movieDetails.image} alt={movieDetails.title} /></p>
-                    <p>Rating: {review.rating}</p>
-                    <p>Content: {review.content}</p>
-                    <hr />
-                  </div>
-                );
-              })}
+              {reviewedMovies.map((review) => (
+                <div key={review.id}>
+                  <p>Movie: {review.movieId}</p>
+                  <p>Rating: {review.rating}</p>
+                  <p>Content: {review.content}</p>
+                  <hr />
+                </div>
+              ))}
             </div>
-            {/* Rest of the code */}
+              {/* Rest of the code */}
+            </div>
+            ) : (
+              <h3>Sorry! You are not logged in! Please login or register to see this page!</h3>
+            )}
           </div>
-        ) : (
-          <h3>Sorry! You are not logged in! Please login or register to see this page!</h3>
-        )}
-      </div>
-    </>
+         
+        </>
   );
   
 }

@@ -6,10 +6,25 @@ async function createReview(reviews) {
     VALUES($1, $2, $3, $4, $5)
     RETURNING *`, 
     [reviews.content, reviews.rating, reviews.name, reviews.movieId, reviews.userId]
-
-    
-  )
+  );
   return review
+};
+
+const createMovieReview = async ({ movieId, reviewId, userId }) => {
+  try {
+    const { rows: [ movieReview ]} = await db.query(`
+    INSERT INTO movie_reviews ("movieId", "reviewId", "userId")
+    VALUES ($1, $2, $3)
+    RETURNING *
+    `, [movieId, reviewId, userId]);
+
+    console.log(`Movie Review inserted successfully: movieId=${movieId}, reviewId=${reviewId}, userId=${userId}`);
+
+    return movieReview;
+  } catch(err) {
+    throw err
+  }
+    
 }
 
 async function getReviewByUserId(userId){
@@ -21,6 +36,21 @@ async function getReviewByUserId(userId){
     `, [userId]);
     console.log('retrieved reviews:', reviews);
     return reviews;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getMovieReviewsByUserId(userId) {
+  try {
+    const { rows: movieReviews } = await db.query(`
+      SELECT *
+      FROM movie_reviews
+      WHERE "userId" = $1;
+    `, [userId]);
+
+    console.log('Retrieved movie reviews:', movieReviews);
+    return movieReviews;
   } catch (error) {
     throw error;
   }
@@ -153,7 +183,9 @@ async function editReview(reviewId, updatedReviewData) {
 
 module.exports = {
   createReview,
+  createMovieReview,
   getReviewByMovieId,
+  getMovieReviewsByUserId,
   getReviewByMovieAndUser,
   getReviewById,
   deleteReview,

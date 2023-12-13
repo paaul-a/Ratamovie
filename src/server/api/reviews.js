@@ -6,6 +6,7 @@ const { requireUser, requireAdmin } = require('./utils');
 
 const { 
   getReviewByMovieId,
+  getMovieReviewsByUserId,
   getReviewByMovieAndUser,
   createReview,
   getReviewById,
@@ -27,13 +28,13 @@ reviewsRouter.get('/me', requireUser, async (req, res, next) => {
       reviews: reviews,
     };
 
-  
-
     console.log('User details with reviews:', userWithReviews);
     res.json(userWithReviews);
-} catch(err) {
-  next(err);
-}});
+  } catch(err) {
+    next(err);
+  }
+});
+
 
 
 reviewsRouter.get('/', requireAdmin, async(req, res, next) => {
