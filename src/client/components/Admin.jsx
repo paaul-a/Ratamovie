@@ -90,7 +90,7 @@ const Admin = ({ token, user }) => {
   }
 
   return (
-    <div>
+    <div className='adminPage'>
       <h1>ADMIN PANEL</h1>
 
       <section className='adminusers'>
@@ -110,10 +110,10 @@ const Admin = ({ token, user }) => {
           {reviews.map((review) => (
             <li key={reviews.id}>
               {review.content} - {review.rating}
+              <button onClick={handleReviewDelete}>Delete Review</button>
             </li>
           ))}
         </ul>
-        <button onClick={handleReviewDelete}>Delete Review</button>
       </section>
 
       <section className='admincomments'>
@@ -122,10 +122,10 @@ const Admin = ({ token, user }) => {
           {comments.map((comment) => (
             <li key={comment.id}>
               {comment.content}
+              <button onClick={handleCommentDelete}>Delete Comment</button>
             </li>
           ))}
         </ul>
-        <button onClick={handleCommentDelete}>Delete Comment</button>
       </section>
     </div>
   );
