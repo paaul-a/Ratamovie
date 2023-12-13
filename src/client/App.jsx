@@ -18,14 +18,14 @@ function App() {
   const {id} = useParams();
 
 
-  const handleInputChange = (e) => {
-    setSearchMovie(e.target.value);
-  };
+  // // const handleInputChange = (e) => {
+  // //   setSearchMovie(e.target.value);
+  // // };
 
-  const handleSearch = () => {
-    // Navigate to the Movies page with the search query
-    navigate(`/movies?search=${encodeURIComponent(searchMovie)}`);
-  };
+  // // const handleSearch = () => {
+  // //   // Navigate to the Movies page with the search query
+  // //   navigate(`/movies?search=${encodeURIComponent(searchMovie)}`);
+  // };
 
   return (
   <> 
@@ -38,12 +38,27 @@ function App() {
           <Link className="nav-link" to="/login">
             Login
           </Link>
+
           {token ? (
             <Link className="nav-link" to={`/users/${userId}`}>
               User
             </Link>
           ) : null}
            
+
+          <Link className="nav-link" to={`/users/${userId}`}>
+            User
+          </Link>
+            {/* <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search movies..."
+                value={searchMovie}
+                onChange={handleInputChange}
+              />
+              <button onClick={handleSearch}>Search</button>
+            </div> */}
+
         </nav>
     </div>
 
@@ -55,6 +70,7 @@ function App() {
       <Route path="/users/:userId" element={<Account userId={userId} setUserId={setUserId} token={token} setToken={setToken} myReviews={myReviews}/>}/>
     </Routes>
     </>
+
 
     
   );
@@ -69,5 +85,11 @@ function App() {
               />
               <button onClick={handleSearch}>Search</button>
             </div> */}
+
+  );
+  
+}
+
+
 
 export default App;

@@ -26,6 +26,15 @@ usersRouter.get('/', requireAdmin, async( req, res, next) => {
     }
 });
 
+usersRouter.get('/me/:userId', requireUser, async(req, res, next) => {
+    try {
+        
+        console.log('me endpoint:', req.user)
+        res.send(req.user);
+    } catch(err) {
+        next(err)
+    }
+})
 usersRouter.get('/:userId', requireUser, async ( req, res, next) => 
 {
 try{ const userId = req.params.userId;
@@ -46,15 +55,6 @@ try{ const userId = req.params.userId;
     }
 });
 
-usersRouter.get('/me/:userId', requireUser, async(req, res, next) => {
-    try {
-        
-        console.log('me endpoint:', req.user)
-        res.send(req.user);
-    } catch(err) {
-        next(err)
-    }
-})
 // usersRouter.get('/me', requireUser, async (req, res, next) => {
 //     try {
 //         const userId = req.params.userId;

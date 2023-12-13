@@ -165,6 +165,7 @@ body {
   left: 0;
   width: 100%;
   padding: 15px;
+  /* padding-right: 10px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -182,9 +183,12 @@ body {
 }
 
 .navbar .nav-link {
+
   margin-right: 15px;
   font-size: large;
   font-weight: bold;
+  margin-right: 35px;
+  font-size: medium;
   transition: color 0.3s ease;
   &:hover{
     color: #acabab; 
