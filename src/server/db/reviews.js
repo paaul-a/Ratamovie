@@ -1,4 +1,5 @@
 const db = require('./client')
+const { getCommentsByReviewId } = require('./comments');
 
 async function createReview(reviews) {
   const {rows: [ review ]} = await db.query(
@@ -65,9 +66,16 @@ async function getReviewByMovieId(movieId) {
         WHERE "movieId" = $1
       `,
       [movieId]
+    );
+
+    const reviewsWithComments = await Promise.all(
+      reviews.map(async (review) => {
+        const comments = await getCommentsByReviewId(review.id);
+        return { ...review, comments };
+      })
     )
 
-    return reviews;
+    return reviewsWithComments;
   } catch (error) {
     throw error
   }
