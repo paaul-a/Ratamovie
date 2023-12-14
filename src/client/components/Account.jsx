@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
-// eslint-disable-next-line react/prop-types
 function Account({ token }) {
   const [userData, setUserData] = useState({});
   const [reviewedMovies, setReviewedMovies] = useState([]);
@@ -9,39 +10,33 @@ function Account({ token }) {
   let API = "http://localhost:3000/api"
 
   const { id } = useParams();
-  useEffect(() =>{
+  useEffect(() => {
     fetchAccount(id);
-  
-    //fetchReviewedMovies();
-  }, [id]);
-  
-  // async function fetchAccount(userId){
-  //     if (token){
-  //       console.log('token:', token)
 
-  //       try{ 
-  //         const response = await fetch (`${API}/users/me/${userId}`,
-  //         {
-  //         headers:{
-  //           'Content-Type': 'application/json',
-  //           'Authorization': `Bearer ${token}`
-  //         },
-  //       });
-  //       const result = await response.json();
-  //       console.log("account result 2:", result)
-  //       setUserData(result);
-  //     }catch(error){
-  //       console.error(error.message)
-  //     }
-  //   }else{
-  //     console.log("Sorry, you are not logged in!")
-      
-  //   }
-  // }
-  
-  async function fetchAccount(){
-    if (token){
-      try{
+  }, [id]);
+
+  const StarRating = ({
+    rating,
+    onClick,
+    starColor = "#D9AC25",
+    emptyStarColor = "rgb(30, 30, 30)",
+    starSize = "",
+  }) => {
+    const stars = Array.from({ length: 5 }, (_, index) => (
+      <FontAwesomeIcon
+        icon={faStar}
+        key={index}
+        color={index < rating ? starColor : emptyStarColor}
+        onClick={() => onClick(index + 1)}
+        style={{ fontsize: starSize }}
+      />
+    ));
+
+    return <div>{stars}</div>;
+  };
+  async function fetchAccount() {
+    if (token) {
+      try {
         const response = await fetch(`${API}/reviews/me`, {
           headers: {
             'Content-Type': 'application/json',
@@ -49,11 +44,10 @@ function Account({ token }) {
           },
         });
         const result = await response.json();
-      
-        //console.log("user reviews:", result)
+
         setUserData(result)
         setReviewedMovies(result.reviews);
-      } catch(error) {
+      } catch (error) {
         console.error(error.message);
       }
     }
@@ -71,7 +65,7 @@ function Account({ token }) {
   }
 
   async function handleEditProfile() {
-    try{
+    try {
       const response = await fetch(`${API}/users/me`, {
         method: 'PATCH',
         headers: {
@@ -83,7 +77,7 @@ function Account({ token }) {
           newPassword,
         }),
       });
-      if (response.ok){
+      if (response.ok) {
         fetchAccount();
         setNewUsername('');
         setNewPassword('');
@@ -91,7 +85,7 @@ function Account({ token }) {
       } else {
         console.error('Failed to update profile:', response.statusText);
       }
-    } catch (error){
+    } catch (error) {
       console.error('Error updating your profile:', error.message);
     }
   };
@@ -113,22 +107,24 @@ function Account({ token }) {
               {reviewedMovies.map((review) => (
                 <div key={review.id}>
                   <p>Movie: {review.movieId}</p>
-                  <p>Rating: {review.rating}</p>
+                  <p>
+                    <StarRating rating={review.rating} />
+                  </p>                  
                   <p>Content: {review.content}</p>
                   <hr />
                 </div>
               ))}
             </div>
-              {/* Rest of the code */}
-            </div>
-            ) : (
-              <h3>Sorry! You are not logged in! Please login or register to see this page!</h3>
-            )}
+
           </div>
-         
-        </>
+        ) : (
+          <h3>Sorry! You are not logged in! Please login or register to see this page!</h3>
+        )}
+      </div>
+
+    </>
   );
-  
+
 }
 
 export default Account

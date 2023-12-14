@@ -177,6 +177,8 @@ async function deleteReview(reviewId) {
 async function editReview(reviewId, updatedReviewData) {
   const { content, rating } = updatedReviewData;
   try{
+    console.log('Received data:', { reviewId, updatedReviewData});
+
     const { rowCount } = await db.query(`
     UPDATE reviews
     SET content = $1, rating = $2
@@ -189,8 +191,11 @@ async function editReview(reviewId, updatedReviewData) {
         message: `Review with ID ${reviewId} not found.`,
       };
     }
+    if (typeof content === 'undefined' || content === null || typeof rating === 'undefined' || rating === null) {
+      throw new Error('Invalid or missing values for content or rating.');
+    }
     const updatedReview = await getReviewById(reviewId);
-    return updatedReview;
+    return  updatedReview;
 
   } catch (error){
     throw error;

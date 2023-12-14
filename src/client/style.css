@@ -215,6 +215,7 @@ body {
 .details {
   margin-top: 100px;
 }
+
 .singleMovie {
   max-width: 800px;
   margin: 0 auto;
@@ -228,23 +229,41 @@ body {
   clear: both;
 }
 
-.movie-title,
+/* .movie-title, */
 .movie-poster,
 .movie-des,
 .movie-reviews {
   margin-bottom: 20px;
 }
 
+/* .movie-title {
+  color: #fff;
+  font-size: 1.2em;
+  margin-top: -4%;
+} */
+
 .movie-title {
   color: #fff;
   font-size: 1.2em;
-  /* border: 2px solid black; */
   margin-top: -4%;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center; /* Align items vertically in the flex container */
 }
 
-.movie-title p {
+.movie-title h2 {
+  margin: 0; /* Remove margin for the title */
+}
+
+.movie-title .average-rating {
+  margin-left: 10px; /* Adjust the left margin for spacing between title and star rating */
+}
+
+.movie-director {
   /* border: 2px solid black; */
-  margin-top: -5%;
+  margin-top: -1%;
+  font-weight: bold;
+  font-size: 1.2em;
   color: #99b7ccb0;
 
 }
@@ -271,8 +290,6 @@ body {
   margin: 20px 0;
 }
 
-
-
 .movie-poster img {
   max-width: 300px;
   float: left;
@@ -281,6 +298,9 @@ body {
   padding-bottom: 60px;
 }
 
+.average-rating {
+  float: right;
+}
 
 .movie-title,
 .movie-des,
@@ -294,114 +314,14 @@ body {
   margin-top: 10px;
 }
 
-/* .user-review {
-  color:#fff;
-  border: 1px solid #6c8da3;
-  background-color: #6c8da3;
-  box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1);
-  border-radius: 5px;
-  margin-right: 70px;
-  padding-bottom: 10px;
-}
-.user-review p {
-  margin-left: 8px;
-}
 
-.user-review .star-rating {
-  font-size: 20px;
-}
-.user-review h5 {
-  margin-left: 8px;
-  margin-bottom: -5px;
-
-}
-
-.user-review hr {
-  margin: 8px;
-  border-radius: 10px;
-  
-}
-
-.movie-reviews {
-  margin-top: 20px;
-}
-
-Styling for the "REVIEWS" heading
-.movie-reviews h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #333;
-}
-
-Styling for each individual review
-.reviews {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-Styling for the reviewer's name in a review
-.reviews p {
-  margin: 5px 0;
-}
-
-Styling for the delete review button
-.reviews button {
-  background-color: #e74c3c;
-  color: #fff;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 5px;
-}
-
-.reviews button:hover {
-  background-color: #c0392b;
-}
-
-Styling for the comment button and the comment form
-.reviews button + button,
-.comment-form {
-  margin-top: 10px;
-}
-
-.delete-review-icon {
-  color: #e74c3c;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-.delete-review-icon:hover {
-  color: #c0392b;
-}
-
-.comment-form input {
-  padding: 8px;
-  margin-right: 5px;
-}
-
-.comment-form button {
-  background-color: #3498db;
-  color: #fff;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.comment-form button:hover {
-  background-color: #2980b9;
-} */
-/* Existing styling for user review */
 .user-review {
-  color: #fff;
-  border: 1px solid #6c8da3;
-  background-color: #6c8da3;
-  box-shadow: 0 4px 8px rgba(1, 0, 0, 0.1);
+  color: #99b7ccb0;
+  background-color:#6c8da35f;
+  margin-bottom: 20px;
+  padding: 5px;
   border-radius: 5px;
-  margin-right: 70px;
-  padding-bottom: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .user-review p {
   margin-left: 8px;
@@ -425,21 +345,53 @@ Styling for the comment button and the comment form
   margin-top: 20px;
 }
 
+.movie-reviews .set-star-rating {
+  padding: 10px;
+}
+
 /* Styling for the review container */
 .review-container {
   display: flex;
   align-items: center;
+  
+
 }
 
 /* Styling for the delete review icon */
 .delete-review-icon {
-  color: #727272;
+  color: #99b7ccb0;
   margin-left: 10px;
+  padding: 10px;
   cursor: pointer;
 }
 
 .delete-review-icon:hover {
-  color: #3f3f3f;
+  color: #6a7f8eb0;
+}
+.comments h5 {
+  margin-bottom: -17px;
+}     
+
+/* Styling for comment container */
+.comment-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.comment-content {
+  display: flex;
+  align-items: center;
+}
+
+.delete-comment-icon {
+  color: 99b7ccb0;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.delete-comment-icon:hover {
+  color: #6a7f8eb0;
 }
 
 /* Styling for the add comment button */
@@ -533,6 +485,51 @@ Styling for the comment button and the comment form
 }
 
 .login-link-button:hover {
+  background-color: #df6c07;
+}
+
+.reviews-container {
+  margin-top: 20px;
+}
+
+/* Styling for each review */
+.reviews {
+  background-color:#6c8da35f;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/* Styling for the review content */
+.review-content {
+  margin-top: 10px;
+}
+
+
+
+/* Styling for the edit review form */
+.edit-review-form {
+  margin-top: 10px;
+}
+
+.edit-review-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.edit-review-form button {
+  background-color: #dd7d28;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-review-form button:hover {
   background-color: #df6c07;
 }
 
@@ -643,3 +640,62 @@ Styling for the comment button and the comment form
 }
 
 
+/* ACCOUNT PAGE */
+
+.account-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  color: #fff;
+  margin-top: 70px;
+}
+
+.user-info {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.user-info h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.user-info p {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.user-info button {
+  background-color: #dd7d28;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.user-info button:hover {
+  background-color: #df6c07;
+}
+
+.account-reviews {
+  max-width: 600px;
+  width: 100%;
+}
+
+.account-reviews h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.account-reviews hr {
+  border-top: 0.2px solid rgba(214, 222, 227, 0.343);
+  margin: 20px 0;
+}
+
+.account-reviews p {
+  font-size: 1.2em;
+  margin: 5px 0;
+}

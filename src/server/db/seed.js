@@ -94,11 +94,6 @@ const movieReviewData = [
 const comments = [
   {
     content: "I agree, great movie!",
-    reviewId: 1,
-    userId: 2,
-  },
-  {
-    content: "I agree, great movie!",
     reviewId: 2,
     userId: 1,
   },
@@ -195,7 +190,7 @@ const createReviewsTable = async () => {
       CREATE TABLE reviews(
           id SERIAL PRIMARY KEY,
           content TEXT NOT NULL,
-          rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+          rating INTEGER CHECK (rating >= 0 AND rating <= 5),
           name VARCHAR(255) DEFAULT NULL,
           "movieId" INTEGER REFERENCES movies(id),
           "userId" INTEGER REFERENCES users(id)

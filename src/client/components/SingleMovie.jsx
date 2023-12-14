@@ -21,7 +21,7 @@ const StarRating = ({
   onClick,
   starColor = "#D9AC25",
   emptyStarColor = "rgb(30, 30, 30)",
-  starSize = "1x",
+  starSize = "",
 }) => {
   const stars = Array.from({ length: 5 }, (_, index) => (
     <FontAwesomeIcon
@@ -42,11 +42,12 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
   const [reviews, setReviews] = useState([]);
   const [userRating, setUserRating] = useState(0);
   const [content, setContent] = useState("");
+  const [commentContent, setCommentContent] = useState("")
   const [userName, setUserName] = useState("");
   const [movieId, setMovieId] = useState(0);
   const [comments, setComments] = useState({});
   const [editingReviewId, setEditingReviewId] = useState(null);
-  const [updatedReviewContent, setUpdatedReviewContent] = useState("");
+  const [updatedReviewData, setUpdatedReviewData] = useState("");
 
 
   const [isReviewing, setIsReviewing] = useState(null);
@@ -77,18 +78,14 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
       setIsLoading(true);
 
       const { data } = await axios.get(`${API}/reviews/${id}`);
-      //console.log("Server response:", data.reviews);
       setReviews(data.reviews);
-      //setComments(data.comments);
       if (Array.isArray(data.reviews) && data.reviews.length > 0) {
         // Extract comments from each review
         const allComments = data.reviews.flatMap((review) => review.comments);
-        //console.log("All Comments:", allComments);
         setComments(allComments);
       } else {
         console.log("No reviews found.");
         setComments([]);
-        // console.log("after setComments:", comments)
       }
     } catch (err) {
       console.error("Error fetching reviews:", err.message);
@@ -117,7 +114,7 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
       });
       console.log("Review submitted successfully!");
       const result = await response.json();
-      // console.log("Response from server:", result);
+
       // Check if the result is an object with review details
       if (result.id) {
         // Update the state by adding the new review to the existing reviews array
@@ -126,8 +123,6 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
       } else {
         console.error("Invalid response format: ", result);
       }
-
-      //setNewReview();
       setContent("");
       setUserRating(0);
       setUserName("");
@@ -144,9 +139,6 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
     event.preventDefault();
     setIsLoading(true);
     try {
-      // console.log("content:", content);
-      // console.log("reviewId:", reviewId);
-      // console.log("userId:", userId);
       const response = await fetch(`${API}/comments`, {
         method: "POST",
         headers: {
@@ -154,12 +146,11 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
           "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
-          content: content,
+          content: commentContent,
           reviewId: reviewId,
           userId: userId,
         }),
       });
-      // console.log("comment response:", response);
       console.log("Comment submitted successfully!");
       const result = await response.json();
       // console.log("Response from server:", result);
@@ -172,11 +163,9 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
         console.error("Invalid response format: ", result);
       }
 
-      setContent("");
+      setCommentContent("");
       setIsReviewing(null);
-      //setNewReview();
-      //setUserName("");
-      // setReviewId(0);
+
     } catch (error) {
       console.error("Error submitting review: ", error.message);
     } finally {
@@ -184,99 +173,36 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
     }
   }
 
-  // const editReview = async (reviewId) => {
-  //   try {
-  //     setIsLoading(true);
 
-  //     const response = await axios.patch(
-  //       `${API}/reviews/${reviewId}`,
-  //       { updatedReview: updatedReview },
-  //       {
-  //         headers: {
-  //           'Authorization': `Bearer ${token}`,
-  //           'Content-Type': 'application/json',
-  //         },
-  //       }
-  //     );
 
-  //     if (response.status === 200) {
-  //       // Optionally update the state or perform any additional actions
-  //       console.log('Review updated successfully!');
-  //       // Update the state or perform any other actions as needed
-  //     } else {
-  //       console.error('Failed to update review:', response.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error updating review:', error.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-  // const handleEditReview = async (event, reviewId, updatedReviewContent) => {
-  //   event.preventDefault();
-  //   setIsLoading(true);
-
-  //   try {
-  //     if (!updatedReviewContent) {
-  //       console.error('Invalid updated review data');
-  //       return;
-  //     }
-  //     console.log("update review content and token:", updatedReviewContent, token)
-  //     const response = await axios.put(
-  //       `/api/reviews/${reviewId}`,
-  //       { updatedReview: updatedReviewContent },
-  //       {
-  //         headers: {
-  //           authorization: token,
-  //         },
-          
-  //       }
-  //     );
-  //       console.log("edit response:", response)
-  //     if (response.status === 200) {
-  //       // Update the state or perform any additional actions
-  //       console.log('Review updated successfully!');
-  //       // Reset the editing state
-  //       setEditingReviewId(null);
-  //       setUpdatedReviewContent("");
-  //       // Optionally, fetch updated reviews
-  //       await fetchReviews();
-  //     } else {
-  //       console.error('Failed to update review:', response.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error updating review:', error.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  const handleEditReview = async (event, reviewId, updatedReviewContent) => {
+  const handleEditReview = async (event, reviewId, updatedReviewData) => {
     event.preventDefault();
     setIsLoading(true);
-  
     try {
-      if (!updatedReviewContent) {
+      if (!updatedReviewData) {
         console.error('Invalid updated review data');
         return;
       }
-  
+      const updatedReviewDataObject = {
+        content: updatedReviewData,
+        rating: userRating
+      }
       const response = await fetch(`/api/reviews/${reviewId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ updatedReview: updatedReviewContent }),
+        body: JSON.stringify({ updatedReview: updatedReviewDataObject }),
       });
-  
+
       if (response.ok) {
         // Update the state or perform any additional actions
         console.log('Review updated successfully!');
         // Reset the editing state
         setEditingReviewId(null);
-        setUpdatedReviewContent("");
-        // Optionally, fetch updated reviews
+        setUpdatedReviewData("");
+
         await fetchReviews();
       } else {
         const errorData = await response.json();
@@ -307,7 +233,6 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
 
         await fetchReviews();
 
-        // Optionally update other state variables or perform any additional actions
         console.log("Review deleted successfully!");
       } else {
         console.error("Failed to delete review:", response.data.message);
@@ -329,12 +254,10 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
       });
 
       if (response.data.success) {
-        // Remove the deleted comment from the state
         setComments((prevComments) =>
           prevComments.filter((comment) => comment.id !== commentId)
         );
 
-        // Optionally update other state variables or perform any additional actions
         console.log("Comment deleted successfully!");
       } else {
         console.error("Failed to delete comment:", response.data.message);
@@ -360,148 +283,162 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
 
         {movie.id ? (
           <div className="singleMovie">
+
             <div className="movie-poster">
               <img src={movie.image} alt={movie.title} />
-              {/* <div className="average-rating">
-                <p>RATINGS</p>
-                <StarRating rating={averageRating} />
-              </div> */}
             </div>
 
-            <div className="movie-title">
-              <h2>{movie.title}</h2>
-              <p>
+
+            <div className="movie-details">
+
+              <div className="movie-title">
+                <h2>{movie.title}</h2>
+                <div className="average-rating">
+                  <StarRating rating={averageRating} />
+                </div>
+
+              </div>
+              <div>
+              <p className="movie-director">
                 {movie.year} Directed by {movie.director}
               </p>
-            </div>
+              </div>
 
-            <div className="movie-des">
-              <p>{movie.description}</p>
-            </div>
+              <div className="movie-des">
+                <p>{movie.description}</p>
+              </div>
 
-            <div className="movie-reviews">
-              <h3>REVIEWS</h3>
-              <hr />
-              {reviews.map((review) => (
-                <div className="reviews" key={review.id}>
-                  <p className="review-container">
-                    Review by {review.name}{" "}
-                    <StarRating rating={review.rating} />
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      className="delete-review-icon"
-                      onClick={() => deleteReview(review.id)}
-                    />
-                    {token && review.userId === userId && (
-                      <FontAwesomeIcon
-                        icon={faEdit}
-                        className="edit-review-icon"
-                        onClick={() => setEditingReviewId(review.id)}
-                      />
+              <div className="movie-reviews">
+                <h3>REVIEWS</h3>
+                <hr />
+                {reviews.map((review) => (
+                  <div className="reviews" key={review.id}>
+                    <p className="review-container">
+                      Review by {review.name}{" "}
+                      <StarRating className="set-star-rating" rating={review.rating} />
+                      {token && review.userId === userId && (
+                        <>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="delete-review-icon"
+                            onClick={() => deleteReview(review.id)}
+                          />
+                          <FontAwesomeIcon
+                            icon={faEdit}
+                            className="edit-review-icon"
+                            onClick={() => setEditingReviewId(review.id)}
+                          />
+                        </>
+                      )}
+                    </p>
+                    {editingReviewId === review.id ? (
+                      <form className="edit-review-form" onSubmit={(e) => handleEditReview(e, review.id, updatedReviewData)}>
+                        <input
+                          type="text"
+                          placeholder="Edit your review..."
+                          value={updatedReviewData}
+                          onChange={(e) => setUpdatedReviewData(e.target.value)}
+                        />
+                        <button type="submit">Save</button>
+                        <button type="button" onClick={() => setEditingReviewId(null)}>
+                          Cancel
+                        </button>
+                      </form>
+                    ) : (
+                      <p>{review.content}</p>
                     )}
-                  </p>
-                  {editingReviewId === review.id ? (
-                    <form onSubmit={(e) => handleEditReview(e, review.id, updatedReviewContent)}>
-                      <input
-                        type="text"
-                        placeholder="Edit your review..."
-                        value={updatedReviewContent}
-                        onChange={(e) => setUpdatedReviewContent(e.target.value)}
-                      />
-                      <button type="submit">Save</button>
-                      <button type="button" onClick={() => setEditingReviewId(null)}>
-                        Cancel
-                      </button>
-                    </form>
-                  ) : (
-                    <p>{review.content}</p>
-                  )}
-
-                  <div className="comments">
-                    {comments &&
-                      comments
-                        .filter((comment) => comment.reviewId === review.id)
-                        .map((comment) => (
-                          <div key={comment.id} className="comment-container">
-                            <p>Commented: {comment.content}</p>
-                            {token && (
-                              <FontAwesomeIcon
-                                icon={faTrash}
-                                className="delete-comment-icon"
-                                onClick={() => deleteComment(comment.id)}
-                              />
-                            )}
-                          </div>
-                        ))}
-                  </div>
 
 
-                  <button
-                    className="add-comment"
-                    onClick={() => setIsReviewing(review.id)}
-                  >
-                    + Comment
-                  </button>
 
-                  {/* Render comment input if the review is being commented on */}
-                  {isReviewing === review.id && (
-                    <form
-                      className="comment-form"
-                      onSubmit={(e) => handleComments(e, review.id)}
+                    <div className="comments">
+                      <h5>Comments</h5>
+                      <hr />
+                      {comments &&
+                        comments
+                          .filter((comment) => comment.reviewId === review.id)
+                          .map((comment) => (
+                            <div key={comment.id} className="comment-container">
+                              <div className="comment-content">
+                                <p>Commented: {comment.content}</p>
+                                {token && (
+                                  <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className="delete-comment-icon"
+                                    onClick={() => deleteComment(comment.id)}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                    </div>
+
+                    <button
+                      className="add-comment"
+                      onClick={() => setIsReviewing(review.id)}
                     >
-                      <input
-                        type="text"
-                        placeholder="Add a comment..."
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                      />
-                      <button>POST</button>
-                    </form>
-                  )}
+                      + Comment
+                    </button>
 
-                  <hr />
-                </div>
-              ))}
-
-              <div className="user-review">
-                {token ? (
-                  <>
-                    <p>Rate</p>
-                    <StarRating
-                      className="star-rating"
-                      rating={userRating}
-                      onClick={handleStarClick}
-                      starSize="3x"
-                    />
-
-                    <h5>Review Movie</h5>
-                    <hr />
-                    <form className="review-form">
-                      <input
-                        className="review-input"
-                        type="text"
-                        name="review"
-                        placeholder="Add a review..."
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                      />
-                      <button
-                        onClick={handleReview}
-                        className="save-button"
-                        type="submit"
+                    {/* Render comment input if the review is being commented on */}
+                    {isReviewing === review.id && (
+                      <form
+                        className="comment-form"
+                        onSubmit={(e) => handleComments(e, review.id)}
                       >
-                        POST
-                      </button>
-                    </form>
-                  </>
-                ) : (
-                  <div className="login-request">
-                    <p>Please log in to make a review or comment.</p>
-                    <Link to="/login">
-                      <button className="login-link-button">Login</button>
-                    </Link>
+                        <input
+                          type="text"
+                          placeholder="Add a comment..."
+                          value={commentContent}
+                          onChange={(e) => setCommentContent(e.target.value)}
+                        />
+                        <button>POST</button>
+                      </form>
+                    )}
+
+
                   </div>
-                )}
+                ))}
+
+                <div className="user-review">
+                  {token ? (
+                    <>
+                      <p>Rate</p>
+                      <StarRating
+                        className="star-rating"
+                        rating={userRating}
+                        onClick={handleStarClick}
+                        starSize="3x"
+                      />
+
+                      <h5>Review Movie</h5>
+                      <hr />
+                      <form className="review-form">
+                        <input
+                          className="review-input"
+                          type="text"
+                          name="review"
+                          placeholder="Add a review..."
+                          value={content}
+                          onChange={(e) => setContent(e.target.value)}
+                        />
+                        <button
+                          onClick={handleReview}
+                          className="save-button"
+                          type="submit"
+                        >
+                          POST
+                        </button>
+                      </form>
+                    </>
+                  ) : (
+                    <div className="login-request">
+                      <p>Please log in to make a review or comment.</p>
+                      <Link to="/login">
+                        <button className="login-link-button">Login</button>
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
