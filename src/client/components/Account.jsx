@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
@@ -8,6 +8,8 @@ function Account({ token }) {
   const [reviewedMovies, setReviewedMovies] = useState([]);
   const [movieDetails, setMovieDetails] = useState({})
   let API = "http://localhost:3000/api"
+
+  const navigate = useNavigate();
 
   const { id } = useParams();
   useEffect(() => {
@@ -90,6 +92,27 @@ function Account({ token }) {
     }
   };
 
+  // async function handleLogout() {
+  //   // Clear user data and token
+  //   setUserData({});
+  //   setReviewedMovies([]);
+    
+  //   // Clear token from local storage or wherever it is stored
+  //   localStorage.removeItem('token');
+
+  //   // Redirect to the main page
+  //   // history.push('/movies');
+  // }
+
+  const handleLogout = () => {
+    setUserData({});
+    setToken("");
+    setReviewedMovies([]);
+
+
+    navigate('/login')
+  }
+
 
   return (
     <>
@@ -99,7 +122,7 @@ function Account({ token }) {
             <div className="user-info">
               <h2>{userData.name}</h2>
               <p>{userData.email}</p>
-              <button>Edit Profile</button>
+              <button onClick={handleLogout}>Logout</button>
             </div>
             <div className="account-reviews">
               <h3>Reviews</h3>

@@ -165,7 +165,6 @@ body {
   left: 0;
   width: 100%;
   padding: 15px;
-  /* padding-right: 10px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -179,7 +178,7 @@ body {
   text-decoration: none;
   font-size: 1.2em;
   transition: color 0.3s ease;
-  padding-right: 15px; /* Add right padding to the nav-links */
+  padding-right: 15px; 
 }
 
 .navbar .nav-link {
@@ -236,31 +235,24 @@ body {
   margin-bottom: 20px;
 }
 
-/* .movie-title {
-  color: #fff;
-  font-size: 1.2em;
-  margin-top: -4%;
-} */
-
 .movie-title {
   color: #fff;
   font-size: 1.2em;
   margin-top: -4%;
   margin-bottom: 10px;
   display: flex;
-  align-items: center; /* Align items vertically in the flex container */
+  align-items: center; 
 }
 
 .movie-title h2 {
-  margin: 0; /* Remove margin for the title */
+  margin: 0; 
 }
 
 .movie-title .average-rating {
-  margin-left: 10px; /* Adjust the left margin for spacing between title and star rating */
+  margin-left: 10px; 
 }
 
 .movie-director {
-  /* border: 2px solid black; */
   margin-top: -1%;
   font-weight: bold;
   font-size: 1.2em;
@@ -269,7 +261,6 @@ body {
 }
 
 .movie-des {
-  /* border: 2px solid black; */
   padding-right: 10%;
   color: #99b7ccb0;
   margin-top: -3%;
@@ -286,7 +277,7 @@ body {
 }
 
 .reviews hr {
-  border-top: 0.2px solid rgba(214, 222, 227, 0.343); /* Adjust thickness and color */
+  border-top: 0.2px solid rgba(214, 222, 227, 0.343); 
   margin: 20px 0;
 }
 
@@ -294,7 +285,6 @@ body {
   max-width: 300px;
   float: left;
   margin-right: 20px;
-  /* border: 2px solid black; */
   padding-bottom: 60px;
 }
 
@@ -699,3 +689,68 @@ body {
   font-size: 1.2em;
   margin: 5px 0;
 }
+
+
+/* ADMIN */
+.adminPage {
+  margin-top: 100px;
+}
+.adminPage h1, h2 {
+  color: #fff;
+  margin: 20px;
+  margin-top: 50px;
+}
+
+.adminPage button {
+  margin: 10px;
+}
+
+.adminPage ul{
+  list-style: none;
+}
+
+.adminPage li {
+  color: white;
+  padding: 10px;
+}
+
+/* .admin-title {
+  color: #e78632;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.user-list,
+.review-list,
+.comment-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.user-item,
+.review-item,
+.comment-item {
+  margin-bottom: 10px;
+}
+
+.adminPage .delete-button {
+  background-color: #bf6b21;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.adminPage .delete-button:hover {
+  background-color: #a85710;
+} */
+
+
