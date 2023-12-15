@@ -49,11 +49,11 @@ function App() {
               Admin
             </Link>
           ) : null} */}
-          {token ? (
+          {/* {token ? (
             <Link className="nav-link" to={`/admin`}>
               Admin
             </Link>
-          ) : null}
+          ) : null} */}
 
         </nav>
     </div>

@@ -92,26 +92,15 @@ function Account({ token }) {
     }
   };
 
-  // async function handleLogout() {
-  //   // Clear user data and token
+
+  // const handleLogout = () => {
   //   setUserData({});
+  //   setToken("");
   //   setReviewedMovies([]);
-    
-  //   // Clear token from local storage or wherever it is stored
-  //   localStorage.removeItem('token');
 
-  //   // Redirect to the main page
-  //   // history.push('/movies');
+
+  //   navigate('/login')
   // }
-
-  const handleLogout = () => {
-    setUserData({});
-    setToken("");
-    setReviewedMovies([]);
-
-
-    navigate('/login')
-  }
 
 
   return (
@@ -122,7 +111,7 @@ function Account({ token }) {
             <div className="user-info">
               <h2>{userData.name}</h2>
               <p>{userData.email}</p>
-              <button onClick={handleLogout}>Logout</button>
+              <button>Logout</button>
             </div>
             <div className="account-reviews">
               <h3>Reviews</h3>

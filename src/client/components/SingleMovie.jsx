@@ -243,6 +243,7 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
       setIsLoading(false);
     }
   }
+  
   async function deleteComment(commentId) {
     setIsLoading(true);
 
