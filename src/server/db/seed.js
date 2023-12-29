@@ -79,8 +79,6 @@ const reviews = [
     movieId: 1,
     userId: 4,
   },
-
-  // Add more dummy reviews if needed
 ];
 
 const movieReviewData = [
