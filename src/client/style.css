@@ -356,6 +356,7 @@ body {
 }
 
 .delete-review-icon:hover {
+  transition: .2s ease-in-out;
   color: #6a7f8eb0;
 }
 .comments h5 {
@@ -375,12 +376,13 @@ body {
 }
 
 .delete-comment-icon {
-  color: 99b7ccb0;
+  color: #99b7ccb0;
   margin-left: 10px;
   cursor: pointer;
 }
 
 .delete-comment-icon:hover {
+  transition: .2s ease-in-out;
   color: #6a7f8eb0;
 }
 
@@ -500,6 +502,11 @@ body {
 /* Styling for the edit review form */
 .edit-review-form {
   margin-top: 10px;
+}
+
+.edit-review-icon:hover {
+  transition: .2s ease-in-out;
+  color: #6a7f8eb0;
 }
 
 .edit-review-form input {
@@ -639,6 +646,17 @@ body {
   padding: 20px;
   color: #fff;
   margin-top: 70px;
+}
+
+.user-info h2 {
+  margin-left: 2px;
+}
+
+.user-info p {
+  margin-left: 10px;
+  margin-top: -10px;
+  font-style: italic;
+  color: #99b7ccb0;
 }
 
 .user-info {

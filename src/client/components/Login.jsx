@@ -30,7 +30,7 @@ const Login = ({ setToken, setUserId }) => {
         })
       });
       const result = await response.json();
-
+      console.log(result.token)
       setToken(result.token);
       setMessage(result.message);
 
