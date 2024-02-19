@@ -31,7 +31,7 @@ function App() {
    <div className="App">
         <nav className="navbar">
           <div className="site-name">RataMovie</div>
-          <Link className="nav-link" to="/movies">
+          <Link className="nav-link" to="/">
             Movies
           </Link>
           <Link className="nav-link" to="/login">
@@ -59,7 +59,7 @@ function App() {
     </div>
 
     <Routes> 
-      <Route path="/movies" element={<Movies/>}/>
+      <Route path="/" element={<Movies/>}/>
       <Route path='/movies/:id' element={<SingleMovie token={token} userId={userId} setUserId={setUserId} setMyReviews={setMyReviews}/>} />
       <Route path="/login" element={<Login userId={userId} setUserId={setUserId} token={token} setToken={setToken}/>}/>
       <Route path="/register" element={<Register token={token} setToken={setToken}/>}/>
