@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { fetchMovie } from './fetchMovie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,11 +12,12 @@ function Account({ token }) {
 
   const navigate = useNavigate();
 
-  const { id } = useParams();
-  useEffect(() => {
-    fetchAccount(id);
+  const { userId } = useParams();
 
-  }, [id]);
+  useEffect(() => {
+    fetchAccount(userId);
+
+  }, [userId]);
 
   const StarRating = ({
     rating,
@@ -36,6 +38,7 @@ function Account({ token }) {
 
     return <div>{stars}</div>;
   };
+
   async function fetchAccount() {
     if (token) {
       try {
@@ -49,22 +52,27 @@ function Account({ token }) {
 
         setUserData(result)
         setReviewedMovies(result.reviews);
+
+        result.reviews.forEach(review => {
+          fetchMovieDetails(review.movieId);
+        });
+
       } catch (error) {
         console.error(error.message);
       }
     }
   }
 
-  async function fetchMovieDetails() {
+  async function fetchMovieDetails(movieId) {
     try {
-      const { data } = await axios.get(`${API}/movies/${id}`);
-      //console.log("movie details in account:", data);
-      return data
-      //setMovieDetails(data);
+      const movieData = await fetchMovie(movieId)
+      console.log("movieData in account:", movieData)
+      setMovieDetails(prevDetails => ({ ...prevDetails, [movieId]: movieData }));
     } catch (err) {
-      console.error("Error fetching movie details:", err.message);
+      console.log(err)
     }
   }
+
 
   async function handleEditProfile() {
     try {
@@ -92,15 +100,23 @@ function Account({ token }) {
     }
   };
 
+  const handleNavLogin = () => {
+    navigate(`/login`);
+  }
 
+  const handlePosterClick = (movieId) => {
+    navigate(`/movies/${movieId}`);
+  };
+  
   // const handleLogout = () => {
+  //   // Clear user data and token
   //   setUserData({});
-  //   setToken("");
+  //   setToken('');
   //   setReviewedMovies([]);
 
-
-  //   navigate('/login')
-  // }
+  //   // Navigate to login page
+  //   navigate('/login');
+  // };
 
 
   return (
@@ -110,33 +126,55 @@ function Account({ token }) {
           <div className="account-container">
             <div className="user-info">
               <h2>{userData.name}</h2>
-              <p>{userData.email}</p>
               <button>Logout</button>
+              <p>{userData.email}</p>
             </div>
             <div className="account-reviews">
-              <h3>Reviews</h3>
-              <hr />
+              <p>REVIEWS</p>
+            </div>
+            <div className="account-review-content">
               {reviewedMovies.map((review) => (
-                <div key={review.id}>
-                  <p>Movie: {review.movieId}</p>
-                  <p>
-                    <StarRating rating={review.rating} />
-                  </p>                  
-                  <p>Content: {review.content}</p>
-                  <hr />
+                <div key={review.id} className="review-item">
+                  {movieDetails[review.movieId] && (
+                    <img
+                      src={movieDetails[review.movieId].image}
+                      alt="Movie Poster"
+                      className="review-poster"
+                      onClick={() => handlePosterClick(review.movieId)}
+
+                    />
+                  )}
+                  <div className="review-details">
+                    {movieDetails[review.movieId] && (
+                      <div className="title-year">
+                        <p>
+                        <span className="review-title">{movieDetails[review.movieId].title}</span>
+                        <span className="year">{movieDetails[review.movieId].year}</span>
+                        </p>
+                      </div>
+                    )}
+                    <div className="account-stars">
+                      <StarRating rating={review.rating} />
+                      <p>{review.content}</p>
+                    </div>
+                  </div>
+                  {/* <hr className="review-separator" /> */}
                 </div>
               ))}
             </div>
-
           </div>
         ) : (
-          <h3>Sorry! You are not logged in! Please login or register to see this page!</h3>
+          <div className="account-login-request">
+            <button onClick={handleNavLogin} className="account-nav-button">Sorry! You are not logged in! 
+            Please login or register to see this page!</button>
+          </div>
         )}
       </div>
-
     </>
   );
-
+  
+  
+  
 }
 
 export default Account

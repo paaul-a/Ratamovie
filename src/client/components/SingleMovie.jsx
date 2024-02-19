@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
+import { fetchMovie } from "./fetchMovie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -33,7 +34,7 @@ const StarRating = ({
     />
   ));
 
-  return <div>{stars}</div>;
+  return <div className="set-star-rating star-rating">{stars}</div>;
 };
 
 // eslint-disable-next-line react/prop-types
@@ -56,22 +57,40 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
   const { id } = useParams();
 
   useEffect(() => {
-    fetchMovie();
+    //fetchMovie();
+    fetchData();
     fetchReviews();
   }, [id, isLoading]);
 
-  async function fetchMovie() {
+  // async function fetchMovie() {
+  //   try {
+  //     setIsLoading(true);
+
+  //     const { data } = await axios.get(`${API}/movies/${id}`);
+  //     setMovie(data);
+  //   } catch (err) {
+  //     console.error("Error fetching movie details:", err.message);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }
+
+  async function fetchData() {
     try {
       setIsLoading(true);
 
-      const { data } = await axios.get(`${API}/movies/${id}`);
-      setMovie(data);
+      const movieData = await fetchMovie(id);
+      // console.log(movieData)
+      setMovie(movieData);
+
+      // Add any other logic you need here
     } catch (err) {
       console.error("Error fetching movie details:", err.message);
     } finally {
       setIsLoading(false);
     }
   }
+
 
   async function fetchReviews() {
     try {
@@ -311,12 +330,12 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
 
               <div className="movie-reviews">
                 <h3>REVIEWS</h3>
-                <hr />
+                {/* <hr /> */}
                 {reviews.map((review) => (
                   <div className="reviews" key={review.id}>
-                    <p className="review-container">
+                    <div className="review-container">
                       Review by {review.name}{" "}
-                      <StarRating className="set-star-rating" rating={review.rating} />
+                      <StarRating rating={review.rating} />
                       {token && review.userId === userId && (
                         <>
                           <FontAwesomeIcon
@@ -331,7 +350,7 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
                           />
                         </>
                       )}
-                    </p>
+                    </div>
                     {editingReviewId === review.id ? (
                       <form className="edit-review-form" onSubmit={(e) => handleEditReview(e, review.id, updatedReviewData)}>
                         <input
@@ -353,7 +372,7 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
 
                     <div className="comments">
                       <h5>Comments</h5>
-                      <hr />
+                      {/* <hr /> */}
                       {comments &&
                         comments
                           .filter((comment) => comment.reviewId === review.id)
@@ -412,7 +431,6 @@ function SingleMovie({ token, setUserId, userId, setMyReviews }) {
                       />
 
                       <h5>Review Movie</h5>
-                      <hr />
                       <form className="review-form">
                         <input
                           className="review-input"

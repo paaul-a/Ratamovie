@@ -40,7 +40,7 @@ function App() {
 
           {token ? (
             <Link className="nav-link" to={`/users/${userId}`}>
-              User
+              My Account
             </Link>
           ) : null}
           

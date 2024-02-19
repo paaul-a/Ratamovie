@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { Link } from "react-router-dom";
 import Axios from "axios";
 
@@ -34,6 +33,10 @@ function Movies() {
     navigate(`/movies/${movieId}`);
   };
 
+  const handleNav = () => {
+    navigate(`/login`);
+  }
+
   const handleInputChange = (e) => {
     setSearchMovie(e.target.value);
   };
@@ -46,68 +49,20 @@ function Movies() {
     );
   };
 
-  // return (
-  //   <>
-  //     <div className="site-header">
-  //       <div className="welcome">
-  //         <h1>
-  //           Welcome to RataMovie! A place to review and rate your favorite
-  //           movies
-  //         </h1>
-  //         <button className="welcome-button">Sign In or Become a Rat</button>
-  //       </div>
-  //     </div>
-
-  //     <div className="app">
-  //       <div className="popular">
-  //         <h3>POPULAR MOVIES</h3>
-  //         <div className="search-bar">
-  //         <input
-  //           className="search-bar"
-  //           type="text"
-  //           placeholder="Search movies..."
-  //           value={searchMovie}
-  //           onChange={handleInputChange}
-  //         />
-  //         <hr />
-  //       </div>
-
-       
-  //         <div className="movies-container">
-  //           {movies.length ? (
-  //             filterMovie().map((movie) => (
-  //               <div key={movie.id} className="movie-card">
-  //                 <img
-  //                   src={movie.image}
-  //                   onClick={() => handleClick(movie.id)}
-  //                   alt={movie.title}
-  //                 />
-  //                 <div className="movie-info">
-  //                   <h2>{movie.title}</h2>
-  //                 </div>
-  //               </div>
-  //             ))
-  //           ) : (
-  //             <h2>Loading...</h2>
-  //           )}
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </>
-  // );
+  
   return (
     <>
       <div className="site-header">
         <div className="welcome">
           <h1>Welcome to RataMovie! A place to review and rate your favorite movies</h1>
-          <button className="welcome-button">Sign In or Become a Rat</button>
+          <button onClick={handleNav} className="welcome-button">Sign In or Become a Rat</button>
         </div>
       </div>
   
       <div className="app">
         <div className="popular-container">
-          <h3>POPULAR MOVIES</h3>
           <div className="search-bar">
+            <h3>POPULAR MOVIES</h3>
             <input
               className="search-bar-input"
               type="text"
@@ -117,7 +72,6 @@ function Movies() {
             />
           </div>
         </div>
-        <hr className="popular-hr" />
   
         <div className="movies-container">
           {movies.length ? (
