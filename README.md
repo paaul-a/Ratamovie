@@ -1,5 +1,5 @@
 # RataMovie 🐀
-This repo is the home of codebase for RataMovie, a movie review web application. 
+This repo is the codebase for RataMovie, a movie review web application. 
 Users will be able to:
 - View movies by movie poster and movie information like title, director, release year and summary
 - Read movie reviews and ratings left by other users
