@@ -1,6 +1,8 @@
 const express = require('express');
 const apiRouter = express.Router();
 const jwt = require('jsonwebtoken');
+const cors = require('cors'); // Add this line
+
 const { JWT_SECRET } = process.env;
 const { getUserById } = require('../db')
 
@@ -8,6 +10,9 @@ const { getUserById } = require('../db')
 //apiRouter.use(volleyball)
 
 // TO BE COMPLETED - set `req.user` if possible, using token sent in the request header
+
+apiRouter.use(cors()); // Use CORS middleware
+
 apiRouter.use(async (req, res, next) => {
   const prefix = 'Bearer ';
   const auth = req.header('Authorization');
