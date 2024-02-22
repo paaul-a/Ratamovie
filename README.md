@@ -1,52 +1,36 @@
-#  🚀 Capstone Boilerplate
+# RataMovie 🐀
+This repo is the home of codebase for RataMovie, a movie review web application. 
+Users will be able to:
+- View movies by movie poster and movie information like title, director, release year and summary
+- Read movie reviews and ratings left by other users
+- Create a user login that displays account information and previous user reviews and ratings for movies
+- Leave movie reviews/ratings and comments under other users reviews
+- Delete comments and reviews that were published by the user 
 
-A template for building web applications using the PERN (PostgreSQL, Express.js, React, Node.js) stack. 
+Deploy Link: https://ratamovie.onrender.com/
 
-##  🏁 Getting Started
+# Project Setup 
+1. Clone repo
+2. Install NPM packages `npm i`
+3. Create database `createdb ratamovie` and seed file `npm run seed`
+4. Start server `npm run dev` and open http://localhost:3000/
 
-1. **Don't fork or clone this repo!** Instead, create a new, empty directory on your machine and `git init` (or create an _empty_ repo on GitHub and clone it to your local machine)
+# Technologies/Resources Used 
+- [PostgreSLQ](https://www.postgresql.org/)
+- [Express](https://expressjs.com/)
+- [React](https://react.dev/)
+- [Node.js](https://nodejs.org/en/)
+- [JSON Web Token](https://jwt.io/)
+- [JavaScript](https://www.javascript.com/)
+- [HTML](https://html.com/)
+- [CSS](https://www.w3.org/Style/CSS/Overview.en.html)
+- [The Movie Database](https://www.themoviedb.org/)
 
-2. Add this template as a remote and merge it into your own repository
+# Team Members
+- [Paula Mason](https://www.linkedin.com/in/paularosemason/) - Team Leader/Frontend Developer
+- [Neha D'Souza](https://www.linkedin.com/in/nehadsouza0/) - Backend Developer/UX design
 
-```bash
-git remote add boilermaker git@github.com:FullstackAcademy/capstone-app-template.git
-git fetch boilermaker
-git merge boilermaker/main
-```
+# Peview of Ratamovie 
+![Alt text](Untitled_Project_V1.gif)
 
-3. Install packages
-
-```bash
-npm i
-```
-
-4. Add a `.env` file with your secret value for auth
-```
-JWT_SECRET='somesecretvalue'
-```
-
-5. Create the database
-
-```bash
-createdb your-database-name
-```
-
-6. Update `src/server/db/client.js` to reflect the name of your database
-
-```js
-const connectionString = process.env.DATABASE_URL || 'https://localhost:5432/your-database-name';
-```
-
-7. Seed the database
-```bash
-npm run seed
-```
-
-8. Start the server
-```bash
-npm run dev
-```
-
-9. Open your browser at `http://localhost:3000`
-
-10. Build something cool! 😎
+![Alt text](Untitled_Project_V2.gif)
