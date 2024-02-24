@@ -1,4 +1,12 @@
 require('dotenv').config()
+const config = require('../../config');
+const os = require('os');
+
+const hostname = os.hostname();
+const databaseHostname = config.database.hostname;
+
+console.log('Server Hostname:', hostname);
+console.log('Database Hostname:', databaseHostname);
 
 const express = require('express');
 const router = require('vite-express');
