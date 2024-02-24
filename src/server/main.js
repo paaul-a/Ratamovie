@@ -1,9 +1,11 @@
 require('dotenv').config()
-const config = require('../../config');
+// const config = require('../../config');
 const os = require('os');
 
 const hostname = os.hostname();
-const databaseHostname = config.database.hostname;
+// const databaseHostname = config.database.hostname;
+const databaseHostname = process.env.DATABASE_HOSTNAME;
+
 
 console.log('Server Hostname:', hostname);
 console.log('Database Hostname:', databaseHostname);
