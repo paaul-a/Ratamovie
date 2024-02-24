@@ -309,7 +309,7 @@ const insertComments = async () => {
 /*----------------------
   Running Functions in order
 ------------------------*/
-const seedDatabase = async () => {
+const seedDatabse = async () => {
   try {
     db.connect()
     await dropTables()
@@ -326,4 +326,4 @@ const seedDatabase = async () => {
   }
 }
 
-module.exports = seedDatabase;
+seedDatabse()
