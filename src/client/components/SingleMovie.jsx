@@ -7,6 +7,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
+const environment = process.env.NODE_ENV || 'development';
 let API = environment == 'production' ? 'https://ratamovie.onrender.com/api' : 'http://localhost:3000/api';
 
 
