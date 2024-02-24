@@ -7,7 +7,8 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
-let API = "http://localhost:3000/api";
+let API = environment == 'production' ? 'https://ratamovie.onrender.com/api' : 'http://localhost:3000/api';
+
 
 const calculateAverageRating = (reviews) => {
   if (reviews.length === 0) {

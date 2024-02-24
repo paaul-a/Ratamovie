@@ -8,7 +8,9 @@ function Account({ token }) {
   const [userData, setUserData] = useState({});
   const [reviewedMovies, setReviewedMovies] = useState([]);
   const [movieDetails, setMovieDetails] = useState({})
-  let API = "http://localhost:3000/api"
+  const environment = process.env.NODE_ENV || 'development';
+  let API = environment == 'production' ? 'https://ratamovie.onrender.com/api' : 'http://localhost:3000/api';
+
 
   const navigate = useNavigate();
 

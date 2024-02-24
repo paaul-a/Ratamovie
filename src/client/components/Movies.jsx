@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Axios from "axios";
+let API = environment == 'production' ? 'https://ratamovie.onrender.com/api' : 'http://localhost:3000/api';
 
-let API = "http://localhost:3000/api";
 
 function Movies() {
   const [searchMovie, setSearchMovie] = useState("");
